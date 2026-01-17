@@ -1,5 +1,7 @@
-import { ArrowRight, Play, GraduationCap, Briefcase, Linkedin, Twitter, Instagram, Youtube } from "lucide-react";
-import { useRef } from "react";
+import { ArrowRight, Download, Menu, X } from "lucide-react";
+import { GalleryGrid } from "@/components/GalleryGrid";
+import { galleryImages } from "@/data/gallery-images";
+import { useRef, useState } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -7,931 +9,923 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Index() {
-  const hostSectionRef = useRef<HTMLDivElement>(null);
-  const hostContainerRef = useRef<HTMLDivElement>(null);
-  const episodesSectionRef = useRef<HTMLDivElement>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const heroSectionRef = useRef<HTMLDivElement>(null);
-  const aboutSectionRef = useRef<HTMLDivElement>(null);
-  const developerToolsSectionRef = useRef<HTMLDivElement>(null);
-  const beAGuestSectionRef = useRef<HTMLDivElement>(null);
+  const problemSectionRef = useRef<HTMLDivElement>(null);
+  const solutionSectionRef = useRef<HTMLDivElement>(null);
+  const useCasesSectionRef = useRef<HTMLDivElement>(null);
+  const economicsSectionRef = useRef<HTMLDivElement>(null);
+  const configurationsSectionRef = useRef<HTMLDivElement>(null);
+  const whyModularSectionRef = useRef<HTMLDivElement>(null);
+  const processSectionRef = useRef<HTMLDivElement>(null);
+  const ctaSectionRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(() => {
-    if (!hostContainerRef.current || !hostSectionRef.current) return;
+  // showcaseGallery uses 0-15 (16 images) - keep unchanged
+  const showcaseGallery = [
+    ...galleryImages.slice(0, 13),
+    { ...galleryImages[13], className: "sm:col-span-2" },
+    { ...galleryImages[14], className: "sm:col-span-3" },
+    { ...galleryImages[15], className: "sm:col-span-4" },
+  ];
+  // All other galleries use unique images - no overlaps between non-showcase galleries
+  const introGallery = [
+    galleryImages[16],
+    galleryImages[17],
+    galleryImages[18],
+    galleryImages[19],
+  ];
+  const problemGallery = [
+    galleryImages[20],
+    galleryImages[21],
+    galleryImages[22],
+  ];
+  const solutionGallery = [
+    galleryImages[23],
+    galleryImages[24],
+    galleryImages[25],
+  ];
+  const useCasesGallery = [
+    galleryImages[15],
+    galleryImages[9],
+    galleryImages[13],
+  ];
+  const economicsGallery = [
+    galleryImages[29],
+    galleryImages[30],
+  ];
+  // These reuse some showcaseGallery images but are unique from each other
+  const configurationsGallery = [
+    galleryImages[0],
+    galleryImages[1],
+  ];
+  const whyModularGallery = [
+    galleryImages[2],
+    galleryImages[3],
+    galleryImages[4],
+  ];
+  const processGallery = [
+    galleryImages[5],
+    galleryImages[6],
+    galleryImages[7],
+  ];
+  const ctaGallery = [
+    galleryImages[8],
+  ];
 
-    const container = hostContainerRef.current;
-    const section = hostSectionRef.current;
-
-    // Set will-change for better performance
-    gsap.set([container, section], { willChange: "transform, width, padding" });
-
-    // Calculate the offset needed to expand to full width
-    const calculateOffset = () => {
-      const sectionRect = section.getBoundingClientRect();
-      return sectionRect.left;
-    };
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: section,
-        start: "top 95%",
-        end: "top 60%",
-        scrub: 1,
-        anticipatePin: 1,
-      },
-    });
-
-    // Animate container from 70% width to full width, move up
-    tl.to(container, {
-      width: "100vw",
-      maxWidth: "100vw",
-      marginLeft: 0,
-      marginRight: 0,
-      x: () => -calculateOffset(),
-      y: -100,
-      ease: "sine.inOut",
-      duration: 1,
-    });
-
-    // Move section up and remove padding simultaneously
-    tl.to(
-      section,
-      {
-        paddingLeft: 0,
-        paddingRight: 0,
-        y: -100,
-        ease: "sine.inOut",
-        duration: 1,
-      },
-      0
-    );
-
-    // Clean up will-change after animation
-    ScrollTrigger.create({
-      trigger: section,
-      start: "top 10%",
-      onEnter: () => {
-        gsap.set([container, section], { willChange: "auto" });
-      },
-    });
-  }, { scope: hostSectionRef });
   return (
-    <div className="min-h-screen bg-[#070707] text-[#F5F5F5]">
+    <div className="min-h-screen bg-[#faf2dc] text-[#070707]">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 pt-2">
-        <div className="w-full flex justify-between items-center">
-          <button className="border-[1px] border-white/20 bg-black/40 backdrop-blur-sm px-4 py-1.5 rounded-lg text-xs font-light tracking-tight text-[#F5F5F5] hover:text-white hover:border-white/60 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all duration-500 ease-out">
-            BE A SPONSOR
-          </button>
+        <div className="w-full max-w-[1400px] mx-auto relative flex justify-between items-center">
+          {/* Logo */}
           <button
             onClick={() => {
               window.scrollTo({ top: 0, behavior: 'smooth' });
+              setMobileMenuOpen(false);
             }}
-            className="border-[1px] border-white/20 bg-black/40 backdrop-blur-sm px-2 py-1.5 rounded-lg hover:border-white/40 hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-all duration-500 ease-out cursor-pointer"
+            className="border-[1px] border-gray-300 bg-[#faf2dc] px-4 py-3 rounded-lg hover:border-gray-400 hover:shadow-[0_0_15px_rgba(250,242,220,0.2)] transition-all duration-500 ease-out cursor-pointer h-[46px] flex items-center"
           >
-            <div className="flex items-center">
-              <img
-                src="/fb log white.png"
-                alt="FutureBuilt"
-                className="h-10 w-auto"
-              />
-            </div>
+            <span className="text-sm md:text-base font-light tracking-tight text-[#070707]">GolfPod</span>
           </button>
-          <button className="border-[1px] border-white/20 bg-black/40 backdrop-blur-sm px-4 py-1.5 rounded-lg text-xs font-light tracking-tight text-[#F5F5F5] hover:text-white hover:border-white/60 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all duration-500 ease-out">
-            BE A GUEST
+
+          {/* Navigation Island - Desktop Only */}
+          <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2">
+            <div className="flex items-center gap-4 border-[1px] border-gray-300 bg-[#faf2dc] px-4 py-3 rounded-lg h-[46px]">
+              <nav className="flex items-center gap-6">
+                <button
+                  onClick={() => {
+                    problemSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                  className="text-sm font-light tracking-tight text-[#070707] hover:text-black transition-all duration-500 ease-out"
+                >
+                  THE PROBLEM
           </button>
+                <button
+                  onClick={() => {
+                    solutionSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                  className="text-sm font-light tracking-tight text-[#070707] hover:text-black transition-all duration-500 ease-out"
+                >
+                  THE SOLUTION
+                </button>
+                <button
+                  onClick={() => {
+                    useCasesSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                  className="text-sm font-light tracking-tight text-[#070707] hover:text-black transition-all duration-500 ease-out"
+                >
+                  USE CASES
+                </button>
+                <button
+                  onClick={() => {
+                    economicsSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                  className="text-sm font-light tracking-tight text-[#070707] hover:text-black transition-all duration-500 ease-out"
+                >
+                  ECONOMICS
+                </button>
+              </nav>
         </div>
+          </div>
+
+          {/* Mobile Menu Button & CTA */}
+          <div className="flex items-center gap-2 md:gap-0">
+            {/* Mobile CTA Button */}
+            <button 
+              onClick={() => {
+                ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                setMobileMenuOpen(false);
+              }}
+              className="md:hidden border-[1px] border-gray-300 bg-[#3F6B4F] text-white px-3 py-3 rounded-lg text-xs font-light tracking-tight hover:bg-[#2d4f3a] transition-all duration-500 ease-out whitespace-nowrap h-[46px] flex items-center"
+            >
+              REQUEST PRICING
+            </button>
+
+            {/* Mobile Menu Toggle */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden border-[1px] border-gray-300 bg-[#faf2dc] p-2 rounded-lg hover:border-gray-400 transition-all duration-500 ease-out h-[46px] w-[46px] flex items-center justify-center"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? (
+                <X className="w-5 h-5 text-[#070707]" />
+              ) : (
+                <Menu className="w-5 h-5 text-[#070707]" />
+              )}
+            </button>
+
+            {/* Desktop CTA Button */}
+            <div className="hidden md:flex">
+              <button 
+                onClick={() => {
+                  ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+                className="border-[1px] border-gray-300 bg-[#3F6B4F] text-white px-6 py-3 rounded-lg text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-gray-400 hover:shadow-[0_0_15px_rgba(63,107,79,0.2)] transition-all duration-500 ease-out whitespace-nowrap h-[46px] flex items-center"
+              >
+                REQUEST PRICING
+              </button>
+                </div>
+              </div>
+            </div>
+
+        {/* Mobile Menu Dropdown */}
+        {mobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-[#faf2dc] border-t border-gray-300 shadow-lg">
+            <nav className="flex flex-col p-4 gap-2">
+              <button
+                onClick={() => {
+                  problemSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  setMobileMenuOpen(false);
+                }}
+                className="text-left text-sm font-light tracking-tight text-[#070707] hover:text-black py-2 px-4 rounded-lg hover:bg-[#faf2dc]/80 transition-all duration-500 ease-out"
+              >
+                THE PROBLEM
+              </button>
+              <button
+                onClick={() => {
+                  solutionSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  setMobileMenuOpen(false);
+                }}
+                className="text-left text-sm font-light tracking-tight text-[#070707] hover:text-black py-2 px-4 rounded-lg hover:bg-[#faf2dc]/80 transition-all duration-500 ease-out"
+              >
+                THE SOLUTION
+              </button>
+              <button
+                onClick={() => {
+                  useCasesSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  setMobileMenuOpen(false);
+                }}
+                className="text-left text-sm font-light tracking-tight text-[#070707] hover:text-black py-2 px-4 rounded-lg hover:bg-[#faf2dc]/80 transition-all duration-500 ease-out"
+              >
+                USE CASES
+              </button>
+              <button
+                onClick={() => {
+                  economicsSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  setMobileMenuOpen(false);
+                }}
+                className="text-left text-sm font-light tracking-tight text-[#070707] hover:text-black py-2 px-4 rounded-lg hover:bg-[#faf2dc]/80 transition-all duration-500 ease-out"
+              >
+                ECONOMICS
+              </button>
+            </nav>
+                    </div>
+        )}
       </header>
 
       {/* Hero Section */}
-      <section ref={heroSectionRef} className="relative pt-32 pb-12 px-4 md:px-8">
-        <div className="w-full">
-          <div className="grid lg:grid-cols-2 gap-12 mb-12">
-            {/* Left: Heading */}
-            <div>
-              <div className="mb-8">
-                <div className="border-[1px] border-[#252525] rounded-lg px-4 py-2 inline-flex items-center gap-2">
-                  <span className="text-sm font-medium tracking-tight text-[#F5F5F5]">PODCAST</span>
-                </div>
-              </div>
-              <h1 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight">
-                FUTUREBUILT
-              </h1>
-              <p className="text-lg font-light mt-4 leading-relaxed">
-                A media + insights platform spotlighting the founders, developers, innovators, and creators redefining how buildings are imagined, manufactured, and delivered.
-              </p>
-            </div>
-
-            {/* Right: Featured Links */}
-            <div className="flex flex-col gap-4 justify-end">
-              {[
-                { title: "Modular + off-site manufacturing", date: "Latest", active: true, image: "https://api.builder.io/api/v1/image/assets/TEMP/dfe63c909c8d575d830e1d213e458260de452785?width=610" },
-                { title: "Hospitality and amenity innovation", date: "Featured", active: false, image: "https://api.builder.io/api/v1/image/assets/TEMP/51669273274a96f02aa910aac4cff262ceaefcbf?width=610" },
-                { title: "Developer strategy and real-world projects", date: "Coming soon", active: false, image: "https://api.builder.io/api/v1/image/assets/TEMP/4f2afe1b3d63ca297123078589102d959e9916e5?width=610" },
-              ].map((item, idx) => (
-                <div key={idx} className="border-t-[1px] border-[#252525] pt-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <p className={`text-base font-light ${item.active ? "text-[#F5F5F5]" : "text-[#F5F5F5]"}`}>
-                        {item.title}
-                      </p>
-                      <p className={`text-xs font-light ${item.active ? "text-[#F5F5F5]" : "text-[#F5F5F5]"}`}>
-                        {item.date}
-                      </p>
-                    </div>
-                    <div className="w-14 h-14 rounded-lg border-[1px] border-[#252525] overflow-hidden flex-shrink-0">
-                      <img
-                        src={item.image}
-                        alt={item.title}
+      <section ref={heroSectionRef} className="relative pt-24 px-4 md:px-8">
+        <div className="w-full max-w-[1400px] mx-auto">
+          {/* Hero Video with padding and rounded corners */}
+          <div className="relative rounded-lg overflow-hidden h-[500px] md:h-[600px] mb-8">
+            <video
+              src="/Do_a_showcase_202601171650_umjhq.mov"
+              autoPlay
+              loop
+              muted
+              playsInline
                         className="w-full h-full object-cover"
                       />
+            <div className="absolute inset-0 bg-black/20"></div>
+            
+            {/* Text Content Overlay */}
+            <div className="absolute inset-0 flex flex-col justify-center items-center">
+              <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-3 text-center text-white">
+                MODULAR GOLF PODS
+              </h2>
+              
+              {/* CTAs */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button className="border-[1px] border-[#faf2dc] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(250,242,220,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out">
+                  <span>REQUEST PRICING & LAYOUTS</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+                <button className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out">
+                  <Download className="w-4 h-4" />
+                  <span>DOWNLOAD SPEC SHEET</span>
+              </button>
                     </div>
                   </div>
                 </div>
-              ))}
             </div>
-          </div>
+      </section>
 
-          {/* Hero Image */}
-          <div className="relative rounded-lg overflow-hidden h-[500px] md:h-[700px]">
-            <img
-              src="/herooo.jpeg"
-              alt="FutureBuilt - Unfiltered conversations and insights"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black/45"></div>
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-              <h2 className="text-3xl md:text-4xl font-medium mb-2 tracking-tight">Watch FutureBuilt</h2>
-              <p className="text-3xl md:text-4xl font-medium mb-8 tracking-tight">Unfiltered conversations and insights shaping the next era of modular, off-site, and the built environment.</p>
+      {/* Text Content Section */}
+      <section className="bg-[#faf2dc] py-16 px-4 md:px-8">
+        <div className="w-full max-w-[1400px] mx-auto">
+          <h1 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-8">
+            Turn Underutilized Land Into Year-Round Revenue.
+          </h1>
+          <p className="text-lg md:text-xl font-light leading-relaxed mb-6 max-w-3xl">
+            Modular, climate-controlled golf pod solutions that expand member engagement, unlock off-season monetization, and deploy in months — not years.
+          </p>
+          <p className="text-base font-light leading-relaxed text-[#070707]/90 max-w-3xl">
+            Designed for golf courses, private clubs, resorts, and mixed-use developments seeking high-ROI amenities without permanent construction risk.
+                      </p>
+          <GalleryGrid
+            images={introGallery}
+            className="mt-10"
+            columns="grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+          />
+
+          {/* CTA */}
+          <div className="flex justify-center mt-12">
               <button 
                 onClick={() => {
-                  episodesSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }}
-                className="border-[1px] border-white bg-white text-[#070707] px-4 py-2 rounded-lg flex items-center gap-3 text-xs font-light tracking-tight hover:bg-[#F5F5F5] hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out"
+              className="border-[1px] border-[#3F6B4F] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(63,107,79,0.3)] hover:border-[#2d4f3a] hover:scale-[1.02] transition-all duration-500 ease-out"
               >
-                <span>WATCH EPISODES</span>
+              <span>REQUEST PRICING & LAYOUTS</span>
+              <ArrowRight className="w-4 h-4" />
               </button>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Spacer */}
-      <div className="h-24 bg-[#080808]"></div>
 
-      {/* Statement Section */}
-      <section ref={aboutSectionRef} className="bg-[#070707] py-16 px-4 md:px-8">
-        <div className="w-full">
-          {/* ABOUT Badge */}
+      {/* Problem Section */}
+      <section ref={problemSectionRef} className="bg-[#faf2dc] py-16 px-4 md:px-8">
+        <div className="w-full max-w-[1400px] mx-auto">
           <div className="mb-8">
-            <div className="border-[1px] border-[#252525] rounded-lg px-4 py-2 inline-flex items-center gap-2">
-              <span className="text-sm font-medium tracking-tight text-[#F5F5F5]">ABOUT</span>
+            <div className="border-[1px] border-gray-300 rounded-lg px-4 py-2 inline-flex items-center gap-2">
+              <span className="text-sm font-medium tracking-tight text-[#070707]">THE PROBLEM</span>
             </div>
           </div>
-          {/* Text Content */}
-          <div className="space-y-6">
-            {/* Heading Section */}
-            <div className="space-y-3">
-              <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight">
-                Where innovation meets real-world building
+
+          <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-8">
+            Traditional Golf Expansion Is Slow, Risky, and Capital Heavy
               </h2>
+
+          <div className="grid md:grid-cols-2 gap-12 mt-12">
+            <div>
+              <h3 className="text-xl font-medium mb-6">Permanent builds require:</h3>
+              <ul className="space-y-4 text-base font-light leading-relaxed">
+                <li className="flex items-start gap-3">
+                  <span className="text-gray-400 mt-2">•</span>
+                  <span>Long entitlement cycles</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-gray-400 mt-2">•</span>
+                  <span>High construction risk and overruns</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-gray-400 mt-2">•</span>
+                  <span>Permanent land commitments</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-gray-400 mt-2">•</span>
+                  <span>Limited flexibility if demand shifts</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-gray-400 mt-2">•</span>
+                  <span>Weather-driven seasonality constraints</span>
+                </li>
+              </ul>
             </div>
 
-            {/* Divider */}
-            <div className="border-t-[1px] border-[#252525] my-8"></div>
-
-            {/* Description Section */}
-            <div className="space-y-5">
-              <p className="text-base font-light leading-relaxed text-[#F5F5F5]">
-                The built environment is changing faster than ever. Off-site manufacturing, modular construction, automation, and new development models are reshaping what's possible for hospitality, housing, and commercial projects.
-              </p>
-              <p className="text-base font-light leading-relaxed text-[#F5F5F5]">
-                FutureBuilt exists to give developers, architects, and industry leaders a direct line to the insights, systems, and stories behind this transformation.
-              </p>
-              <p className="text-base font-light leading-relaxed text-[#F5F5F5]">
-                Through long-form conversations, developer tools, and curated industry intelligence, we highlight what's working, what's emerging, and what's next.
-              </p>
+            <div>
+              <h3 className="text-xl font-medium mb-6">At the same time, operators face:</h3>
+              <ul className="space-y-4 text-base font-light leading-relaxed">
+                <li className="flex items-start gap-3">
+                  <span className="text-gray-400 mt-2">•</span>
+                  <span>Declining shoulder-season utilization</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-gray-400 mt-2">•</span>
+                  <span>Pressure to increase member value and retention</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-gray-400 mt-2">•</span>
+                  <span>Rising operating costs</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-gray-400 mt-2">•</span>
+                  <span>Demand for experiential, tech-enabled amenities</span>
+                </li>
+              </ul>
             </div>
+          </div>
+
+          <GalleryGrid
+            images={problemGallery}
+            className="mt-12"
+            columns="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+          />
+
+          {/* CTA */}
+          <div className="flex justify-center mt-12">
+            <button 
+              onClick={() => {
+                ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="border-[1px] border-[#3F6B4F] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(63,107,79,0.3)] hover:border-[#2d4f3a] hover:scale-[1.02] transition-all duration-500 ease-out"
+            >
+              <span>REQUEST PRICING & LAYOUTS</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </section>
 
-      {/* Spacer */}
-      <div className="h-24 bg-[#080808]"></div>
 
-      {/* Developer Tools Section */}
-      <section ref={developerToolsSectionRef} className="bg-[#080808] py-16 px-4 md:px-8">
-        <div className="w-full">
-          <div className="mb-12">
-            <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-4">Developer Tools</h2>
-            <p className="text-lg font-light leading-relaxed text-[#F5F5F5]">
-              Tools designed to help developers make faster, smarter decisions.
-            </p>
+      {/* Solution Section */}
+      <section ref={solutionSectionRef} className="bg-[#3F6B4F] py-16 px-4 md:px-8">
+        <div className="w-full max-w-[1400px] mx-auto">
+          <div className="mb-8">
+            <div className="border-[1px] border-[#faf2dc] rounded-lg px-4 py-2 inline-flex items-center gap-2 bg-[#faf2dc]">
+              <span className="text-sm font-medium tracking-tight text-[#070707]">THE SOLUTION</span>
           </div>
+            </div>
+
+          <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-8 text-white">
+            A Smarter Way to Expand Golf Revenue
+              </h2>
+
+          <p className="text-lg font-light leading-relaxed mb-12 max-w-3xl text-white">
+            Modular Golf Pods deliver rapid deployment, portability, and climate-controlled play for year-round utilization.
+          </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Tool 1: Amenity ROI Calculator */}
-            <div className="border-[1px] border-[#252525] rounded-lg p-8 bg-[#0a0a0a]">
-              <h3 className="text-2xl font-medium mb-4 tracking-tight">Amenity ROI Calculator</h3>
-              <p className="text-sm font-light leading-relaxed mb-6 text-[#F5F5F5]">
-                Quickly evaluate the revenue impact of modular wellness amenities and off-site guest experiences.
-              </p>
-              <button className="border-[1px] border-white bg-white text-[#070707] px-4 py-3 rounded-lg flex items-center gap-4 text-xs font-light tracking-tight w-fit hover:bg-[#F5F5F5] hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out">
-                <span>TRY IT NOW</span>
-              </button>
+            {[
+              "Rapid deployment (weeks to months)",
+              "Portability — relocate, expand, or redeploy as demand evolves",
+              "Climate-controlled play for year-round utilization",
+              "Scalable layouts from single bay to multi-bay installations",
+              "Lower upfront risk than permanent construction",
+              "Clean aesthetics aligned with premium club environments"
+            ].map((benefit, idx) => (
+              <div key={idx} className="border-[1px] border-[#faf2dc] rounded-lg p-6 bg-[#faf2dc]">
+                <p className="text-base font-light leading-relaxed text-[#070707]">{benefit}</p>
+              </div>
+            ))}
             </div>
 
-            {/* Tool 2: Zoning + Entitlement AI Tools */}
-            <div className="border-[1px] border-[#252525] rounded-lg p-8 bg-[#0a0a0a]">
-              <h3 className="text-2xl font-medium mb-4 tracking-tight">Zoning + Entitlement AI Tools</h3>
-              <p className="text-sm font-light leading-relaxed mb-6 text-[#F5F5F5]">
-                Speed up feasibility and entitlement assessments with automated intelligence.
-              </p>
-              <div className="inline-block border-[1px] border-white bg-white px-4 py-3 rounded-lg text-xs font-light tracking-tight text-[#070707]">
-                COMING SOON
+          <div className="mt-12 p-6 border-[1px] border-[#faf2dc] rounded-lg bg-[#faf2dc]">
+            <p className="text-base font-light leading-relaxed text-[#070707]">
+              Each pod integrates seamlessly with leading simulator platforms, AV systems, and club branding.
+            </p>
               </div>
-            </div>
 
-            {/* Tool 3: Off-Site Cost Frameworks */}
-            <div className="border-[1px] border-[#252525] rounded-lg p-8 bg-[#0a0a0a]">
-              <h3 className="text-2xl font-medium mb-4 tracking-tight">Off-Site Cost Frameworks</h3>
-              <p className="text-sm font-light leading-relaxed mb-6 text-[#F5F5F5]">
-                Benchmark modular and prefab cost structures with clarity.
-              </p>
-              <div className="inline-block border-[1px] border-white bg-white px-4 py-3 rounded-lg text-xs font-light tracking-tight text-[#070707]">
-                COMING SOON
-              </div>
-            </div>
+          {/* CTA */}
+          <div className="flex justify-center mt-12">
+            <button 
+              onClick={() => {
+                ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="border-[1px] border-[#faf2dc] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(250,242,220,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out"
+            >
+              <span>REQUEST PRICING & LAYOUTS</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </section>
 
-      {/* Spacer */}
-      <div className="h-24 bg-[#080808]"></div>
 
-      {/* Be a Guest Section */}
-      <section ref={beAGuestSectionRef} className="bg-white pt-20 pb-[250px] px-4 md:px-8 overflow-hidden">
-        <div className="w-full">
-          <div className="border-[1px] border-[#252525] rounded-lg px-4 py-2 inline-flex items-center gap-2 mb-12">
-            <span className="text-sm font-medium text-[#212121]">NOW ACCEPTING</span>
-            <span className="text-sm font-light text-[#212121]">2026 GUEST APPLICATIONS</span>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-12">
-            <div>
-              <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-6 text-[#212121]">Be a Guest</h2>
-              <p className="text-lg font-light leading-relaxed mb-8 text-[#212121]">
-                Share your expertise with the FutureBuilt audience.
-              </p>
-              <p className="text-sm font-light leading-relaxed mb-8 text-[#212121]">
-                We feature founders, developers, architects, operators, factory leaders, technologists, and innovators creating what's next in the built world.
-              </p>
-              <div className="flex flex-wrap gap-4 mb-8">
-                {["Founders", "Developers", "Architects", "Operators", "Factory Leaders", "Technologists"].map((role, idx) => (
-                  <span key={idx} className="border-[1px] border-[#252525] px-4 py-2 rounded-lg text-xs font-light text-[#212121]">
-                    {role}
-                  </span>
-                ))}
-                  </div>
-              <p className="text-sm font-light leading-relaxed mb-8 text-[#212121]">
-                If you're shaping a meaningful project or have insights worth sharing, apply below.
-              </p>
-              <button className="border-[1px] border-[#212121] bg-[#212121] text-white px-6 py-3 rounded-lg flex items-center gap-4 text-xs font-light tracking-tight hover:bg-[#2a2a2a] hover:shadow-[0_0_20px_rgba(33,33,33,0.5)] hover:scale-[1.02] transition-all duration-500 ease-out">
-                <span>APPLY TO BE A GUEST</span>
-              </button>
-                  </div>
-            <div className="relative rounded-lg overflow-hidden h-[500px]">
-              <img
-                src="/macro.jpeg"
-                alt="Be a Guest"
-                className="w-full h-full object-cover object-top"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/70"></div>
+      {/* Use Cases Section */}
+      <section ref={useCasesSectionRef} className="bg-[#3F6B4F] py-16 px-4 md:px-8">
+        <div className="w-full max-w-[1400px] mx-auto">
+          <div className="mb-8">
+            <div className="border-[1px] border-[#faf2dc] rounded-lg px-4 py-2 inline-flex items-center gap-2 bg-[#faf2dc]">
+              <span className="text-sm font-medium tracking-tight text-[#070707]">USE CASES</span>
             </div>
           </div>
-        </div>
+
+          <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-4 text-white">
+            Built for Revenue, Retention & Differentiation
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-8 mt-12">
+            <div className="border-[1px] border-[#faf2dc] rounded-lg p-8 bg-[#faf2dc]">
+              <h3 className="text-2xl font-medium mb-4 tracking-tight text-[#070707]">Private Clubs</h3>
+              <ul className="space-y-3 text-sm font-light leading-relaxed text-[#070707]">
+                <li className="flex items-start gap-3">
+                  <span className="text-[#070707] mt-1.5">•</span>
+                  <span>Member engagement upgrades</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#070707] mt-1.5">•</span>
+                  <span>Winter play continuity</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#070707] mt-1.5">•</span>
+                  <span>New membership tiers</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#070707] mt-1.5">•</span>
+                  <span>Private events and leagues</span>
+                </li>
+              </ul>
+                  </div>
+
+            <div className="border-[1px] border-[#faf2dc] rounded-lg p-8 bg-[#faf2dc]">
+              <h3 className="text-2xl font-medium mb-4 tracking-tight text-[#070707]">Golf Courses</h3>
+              <ul className="space-y-3 text-sm font-light leading-relaxed text-[#070707]">
+                <li className="flex items-start gap-3">
+                  <span className="text-[#070707] mt-1.5">•</span>
+                  <span>Monetize unused acreage</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#070707] mt-1.5">•</span>
+                  <span>Drive off-peak utilization</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#070707] mt-1.5">•</span>
+                  <span>Corporate outings and group bookings</span>
+                </li>
+              </ul>
+                  </div>
+
+            <div className="border-[1px] border-[#faf2dc] rounded-lg p-8 bg-[#faf2dc]">
+              <h3 className="text-2xl font-medium mb-4 tracking-tight text-[#070707]">Resorts & Hospitality</h3>
+              <ul className="space-y-3 text-sm font-light leading-relaxed text-[#070707]">
+                <li className="flex items-start gap-3">
+                  <span className="text-[#070707] mt-1.5">•</span>
+                  <span>All-weather activity offering</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#070707] mt-1.5">•</span>
+                  <span>Family programming</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#070707] mt-1.5">•</span>
+                  <span>Premium experiential upsells</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="border-[1px] border-[#faf2dc] rounded-lg p-8 bg-[#faf2dc]">
+              <h3 className="text-2xl font-medium mb-4 tracking-tight text-[#070707]">Developers / Mixed-Use</h3>
+              <ul className="space-y-3 text-sm font-light leading-relaxed text-[#070707]">
+                <li className="flex items-start gap-3">
+                  <span className="text-[#070707] mt-1.5">•</span>
+                  <span>Amenity differentiation</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#070707] mt-1.5">•</span>
+                  <span>Faster lease-up velocity</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-[#070707] mt-1.5">•</span>
+                  <span>Strong visual activation of outdoor space</span>
+                </li>
+              </ul>
+                </div>
+              </div>
+
+          <GalleryGrid
+            images={useCasesGallery}
+            className="mt-12"
+            columns="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+          />
+
+          {/* CTA */}
+          <div className="flex justify-center mt-12">
+            <button 
+              onClick={() => {
+                ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="border-[1px] border-[#faf2dc] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(250,242,220,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out"
+            >
+              <span>REQUEST PRICING & LAYOUTS</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+                </div>
+              </div>
       </section>
 
-      {/* Your Host Section */}
-      <section ref={hostSectionRef} className="relative min-h-[737px] px-4 md:px-8 flex items-start pt-0 overflow-x-visible">
-        <div className="absolute inset-0 bg-white h-[550px]"></div>
-        <div ref={hostContainerRef} className="max-w-[1152px] mx-auto w-[80%] relative">
-          <div className="relative rounded-lg overflow-hidden min-h-[699px] bg-[#070707]">
-            <div className="p-12 flex flex-col gap-8">
-              {/* YOUR HOST Badge */}
-              <div className="w-full">
-                <div className="border-[1px] border-[#252525] rounded-lg px-4 py-2 inline-flex items-center gap-2 mb-8">
-                  <span className="text-sm font-medium tracking-tight text-[#F5F5F5]">YOUR HOST</span>
+
+      {/* Economics Snapshot Section */}
+      <section ref={economicsSectionRef} className="bg-[#faf2dc] py-16 px-4 md:px-8">
+        <div className="w-full max-w-[1400px] mx-auto">
+          <div className="mb-8">
+            <div className="border-[1px] border-gray-300 rounded-lg px-4 py-2 inline-flex items-center gap-2">
+              <span className="text-sm font-medium tracking-tight text-[#070707]">ECONOMICS</span>
+                  </div>
                 </div>
+
+          <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-8">
+            Strong Unit Economics Without Permanent Risk
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-12 mt-12">
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-xl font-medium mb-4">Typical deployment profile:</h3>
+                <ul className="space-y-3 text-base font-light leading-relaxed">
+                  <li className="flex items-start gap-3">
+                    <span className="text-gray-400 mt-2">•</span>
+                    <span><strong>Estimated Build Cost:</strong> ~$100,000 per bay</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-gray-400 mt-2">•</span>
+                    <span><strong>Target MSRP:</strong> $150,000–$170,000 per bay</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-gray-400 mt-2">•</span>
+                    <span>Multi-bay discounts available</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-gray-400 mt-2">•</span>
+                    <span>Financing options available through equipment lenders</span>
+                  </li>
+                </ul>
+            </div>
               </div>
-              {/* Image Container - Full Width */}
-              <div className="w-full">
-                <div className="border-[1px] border-[#252525] rounded-lg overflow-hidden w-full">
-                  <img
-                    src="/244404656_919808368737536_2279108597948611483_n.jpg"
-                    alt="Matt Boney"
-                    className="w-full h-auto object-cover"
-                    style={{ display: 'block' }}
-                  />
-                </div>
-              </div>
-              {/* Text Content - Full Width */}
-              <div className="w-full space-y-6">
-                {/* Name & Title Section */}
-                <div className="space-y-3">
-                  <h3 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight">
-                    Matt Boney
-                  </h3>
-                  <div className="flex flex-wrap items-center gap-2 text-base font-light text-[#F5F5F5]/90">
-                    <span>Founder & CEO at Infinite Spa</span>
-                    <span className="w-1 h-1 rounded-full bg-[#252525]"></span>
-                    <span>Building the future of modular wellness</span>
-                  </div>
-                </div>
 
-                {/* Divider */}
-                <div className="border-t-[1px] border-[#252525] my-8"></div>
-
-                {/* Bio Section */}
-                <div className="space-y-5">
-                  <p className="text-base font-light leading-relaxed text-[#F5F5F5]">
-                    Matt Boney is the founder and CEO of Infinite Spa, pioneering modular wellness amenities for hospitality and residential development. His work sits at the intersection of off-site manufacturing, PropTech, and guest experience innovation.
-                  </p>
-                  <p className="text-base font-light leading-relaxed text-[#F5F5F5]">
-                    Prior to Infinite Spa, Matt Co-Founded Daycation, a VC-backed startup in the hospitality technology space and brings a unique perspective to conversations about the future of the built environment.
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-xl font-medium mb-4">Revenue model:</h3>
+                <p className="text-base font-light leading-relaxed mb-4">
+                  Designed for rapid payback via hourly rentals, memberships, leagues, and events.
+                </p>
+                <p className="text-sm font-light leading-relaxed text-[#070707]/80">
+                  Final pricing varies by layout, finishes, technology package, and site logistics.
                   </p>
                 </div>
-
-                {/* Credentials Section */}
-                <div className="pt-4 space-y-3">
-                  <div className="flex items-start gap-3">
-                    <GraduationCap className="w-4 h-4 text-[#F5F5F5] mt-0.5 flex-shrink-0" />
-                    <span className="text-sm font-light text-[#F5F5F5]/90 leading-relaxed">Brown University</span>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <Briefcase className="w-4 h-4 text-[#F5F5F5] mt-0.5 flex-shrink-0" />
-                    <span className="text-sm font-light text-[#F5F5F5]/90 leading-relaxed">Founder & CEO, Infinite Spa</span>
                   </div>
-                </div>
+          <GalleryGrid
+            images={economicsGallery}
+            className="mt-12"
+            columns="grid-cols-1 sm:grid-cols-2"
+          />
 
-                {/* Button */}
-                <div className="pt-4">
-                  <button className="border-[1px] border-white bg-white text-[#070707] px-4 py-3 rounded-lg flex items-center gap-4 text-xs font-light tracking-tight w-fit hover:bg-[#F5F5F5] hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out">
-                    <span>CONNECT ON LINKEDIN</span>
+          {/* CTA */}
+          <div className="flex justify-center mt-12">
+            <button 
+              onClick={() => {
+                ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="border-[1px] border-[#3F6B4F] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(63,107,79,0.3)] hover:border-[#2d4f3a] hover:scale-[1.02] transition-all duration-500 ease-out"
+            >
+              <span>REQUEST PRICING & LAYOUTS</span>
+              <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
       </section>
 
-      {/* Watch FutureBuilt Section Header */}
-      <section className="bg-[#070707] py-16 px-4 md:px-8">
-        <div className="w-full mb-12">
-          <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-4">Watch FutureBuilt</h2>
-          <p className="text-lg font-light leading-relaxed text-[#F5F5F5]">
-            Unfiltered conversations with the people shaping the future of building.
+
+      {/* Configurations Section */}
+      <section ref={configurationsSectionRef} className="bg-[#faf2dc] py-16 px-4 md:px-8">
+        <div className="w-full max-w-[1400px] mx-auto">
+          <div className="mb-8">
+            <div className="border-[1px] border-gray-300 rounded-lg px-4 py-2 inline-flex items-center gap-2">
+              <span className="text-sm font-medium tracking-tight text-[#070707]">CONFIGURATIONS</span>
+            </div>
+          </div>
+
+          <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-8">
+            Flexible Layouts
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-8 mt-12">
+            <div className="border-[1px] border-[#3F6B4F] rounded-lg p-8 bg-[#3F6B4F]">
+              <h3 className="text-2xl font-medium mb-4 tracking-tight text-white">Single Bay Pods</h3>
+              <p className="text-base font-light leading-relaxed text-white">
+                Compact footprint, fast deployment
+              </p>
+        </div>
+
+            <div className="border-[1px] border-[#3F6B4F] rounded-lg p-8 bg-[#3F6B4F]">
+              <h3 className="text-2xl font-medium mb-4 tracking-tight text-white">2–4 Bay Installations</h3>
+              <p className="text-base font-light leading-relaxed text-white">
+                Shared infrastructure efficiencies
           </p>
         </div>
+
+            <div className="border-[1px] border-[#3F6B4F] rounded-lg p-8 bg-[#3F6B4F]">
+              <h3 className="text-2xl font-medium mb-4 tracking-tight text-white">Custom Branding</h3>
+              <p className="text-base font-light leading-relaxed text-white">
+                Custom branding and exterior finishes
+              </p>
+          </div>
+
+            <div className="border-[1px] border-[#3F6B4F] rounded-lg p-8 bg-[#3F6B4F]">
+              <h3 className="text-2xl font-medium mb-4 tracking-tight text-white">Optional Integrations</h3>
+              <p className="text-base font-light leading-relaxed text-white">
+                Optional lounge, viewing, and hospitality integrations
+              </p>
+            </div>
+              </div>
+
+          <div className="mt-12 p-6 border-[1px] border-[#3F6B4F] rounded-lg bg-[#3F6B4F]">
+            <p className="text-base font-light leading-relaxed text-white">
+              Layouts adapt to parking lots, driving range edges, unused turf, rooftops, and adjacent amenity zones.
+            </p>
+            </div>
+          <GalleryGrid
+            images={configurationsGallery}
+            className="mt-12"
+            columns="grid-cols-1 sm:grid-cols-2"
+          />
+
+          {/* CTA */}
+          <div className="flex justify-center mt-12">
+            <button 
+              onClick={() => {
+                ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="border-[1px] border-[#3F6B4F] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(63,107,79,0.3)] hover:border-[#2d4f3a] hover:scale-[1.02] transition-all duration-500 ease-out"
+            >
+              <span>REQUEST PRICING & LAYOUTS</span>
+              <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+            </div>
       </section>
 
-      {/* Episodes Section */}
-      <section ref={episodesSectionRef} className="bg-[#070707] py-0 px-4 md:px-8">
-        <div className="w-full">
-          <div className="border-t-[1px] border-[#252525] mb-8"></div>
 
-          {/* Episode 1 */}
-          <div className="grid lg:grid-cols-[305px_1fr_305px] gap-8 mb-8 pb-8 border-b-[1px] border-[#252525]">
-            <div className="hidden lg:flex bg-[#181818] rounded-lg h-[324px] items-center justify-center relative">
-              <span className="text-2xl font-medium text-white tracking-tight">clientlogo</span>
+      {/* Why Modular Section */}
+      <section ref={whyModularSectionRef} className="bg-[#faf2dc] py-16 px-4 md:px-8">
+        <div className="w-full max-w-[1400px] mx-auto">
+          <div className="mb-8">
+            <div className="border-[1px] border-gray-300 rounded-lg px-4 py-2 inline-flex items-center gap-2">
+              <span className="text-sm font-medium tracking-tight text-[#070707]">WHY MODULAR</span>
             </div>
-            <div className="flex flex-col justify-center">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-sm font-medium text-[#F5F5F5]">Episode 01</span>
-                <span className="w-1.5 h-1.5 rounded-lg bg-[#252525]"></span>
-                <span className="text-xs font-light text-[#F5F5F5]">Modular + off-site</span>
               </div>
-              <h3 className="text-3xl font-light leading-tight mb-6 tracking-tight">
-                Modular manufacturing
-                <br />
-                and factory workflows
-              </h3>
-              <p className="text-xs font-light leading-relaxed mb-8 text-[#F5F5F5]">
-                Exploring the future of off-site manufacturing,
-                <br />
-                modular construction, and factory technology.
-              </p>
-              <button className="border-[1px] border-white bg-white text-[#070707] px-4 py-3 rounded-lg flex items-center gap-4 text-xs font-light tracking-tight w-fit hover:bg-[#F5F5F5] hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out">
-                <span>WATCH EPISODE</span>
-              </button>
-            </div>
-            <div className="relative rounded-lg overflow-hidden h-[324px]">
-              <img
-                src="https://api.builder.io/api/v1/image/assets/TEMP/dfe63c909c8d575d830e1d213e458260de452785?width=610"
-                alt=""
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#070707]"></div>
-              <span className="absolute top-4 right-4 text-lg font-light text-[#F5F5F5]">01</span>
-            </div>
-          </div>
+          
+          <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-8">
+            Optionality Is the Real Asset
+          </h2>
 
-          {/* Episode 2 */}
-          <div className="grid lg:grid-cols-[305px_1fr_305px] gap-8 mb-8 pb-8 border-b-[1px] border-[#252525]">
-            <div className="hidden lg:flex bg-white rounded-lg h-[324px] items-center justify-center relative">
-              <span className="text-2xl font-medium text-[#070707] tracking-tight">clientlogo</span>
-            </div>
-            <div className="flex flex-col justify-center">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-sm font-medium text-[#F5F5F5]">Episode 02</span>
-                <span className="w-1.5 h-1.5 rounded-lg bg-[#252525]"></span>
-                <span className="text-xs font-light text-[#F5F5F5]">Hospitality</span>
-              </div>
-              <h3 className="text-3xl font-light leading-tight mb-6 tracking-tight">
-                Hospitality innovation
-                <br />
-                and amenity strategy
-              </h3>
-              <p className="text-xs font-light leading-relaxed mb-8 text-[#F5F5F5]">
-                Deep dive into modular wellness amenities and
-                <br />
-                how off-site guest experiences are transforming
-                <br />
-                the hospitality industry.
-              </p>
-              <button className="border-[1px] border-white bg-white text-[#070707] px-4 py-3 rounded-lg flex items-center gap-4 text-xs font-light tracking-tight w-fit hover:bg-[#F5F5F5] hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out">
-                <span>WATCH EPISODE</span>
-              </button>
-            </div>
-            <div className="relative rounded-lg overflow-hidden h-[324px]">
-              <img
-                src="https://api.builder.io/api/v1/image/assets/TEMP/51669273274a96f02aa910aac4cff262ceaefcbf?width=610"
-                alt=""
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#070707]"></div>
-              <span className="absolute top-4 right-4 text-lg font-light text-[#F5F5F5]">02</span>
-            </div>
-          </div>
+          <p className="text-lg font-light leading-relaxed mb-12 max-w-3xl">
+            Unlike permanent construction, modular allows you to:
+          </p>
 
-          {/* Episode 3 */}
-          <div className="grid lg:grid-cols-[305px_1fr_305px] gap-8 mb-8 pb-8 border-b-[1px] border-[#252525]">
-            <div className="hidden lg:flex bg-[#D62504] rounded-lg h-[324px] items-center justify-center relative">
-              <span className="text-2xl font-medium text-white tracking-tight">clientlogo</span>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              "Test demand before committing long-term capital",
+              "Move assets if usage patterns change",
+              "Expand incrementally",
+              "Preserve land flexibility",
+              "Reduce entitlement exposure"
+            ].map((benefit, idx) => (
+              <div key={idx} className="border-[1px] border-[#3F6B4F] rounded-lg p-6 bg-[#3F6B4F]">
+                <p className="text-base font-light leading-relaxed text-white">{benefit}</p>
             </div>
-            <div className="flex flex-col justify-center">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-sm font-medium text-[#F5F5F5]">Episode 03</span>
-                <span className="w-1.5 h-1.5 rounded-lg bg-[#252525]"></span>
-                <span className="text-xs font-light text-[#F5F5F5]">Developer strategy</span>
+            ))}
               </div>
-              <h3 className="text-3xl font-light leading-tight mb-6 tracking-tight">
-                Developer strategy
-                <br />
-                and real-world projects
-              </h3>
-              <p className="text-xs font-light leading-relaxed mb-8 text-[#F5F5F5]">
-                Real conversations with developers breaking ground
-                <br />
-                on next-generation communities, hotels, and
-                <br />
-                off-site projects.
-              </p>
-              <button className="border-[1px] border-white bg-white text-[#070707] px-4 py-3 rounded-lg flex items-center gap-4 text-xs font-light tracking-tight w-fit hover:bg-[#F5F5F5] hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out">
-                <span>WATCH EPISODE</span>
-              </button>
-            </div>
-            <div className="relative rounded-lg overflow-hidden h-[324px]">
-              <img
-                src="https://api.builder.io/api/v1/image/assets/TEMP/4f2afe1b3d63ca297123078589102d959e9916e5?width=610"
-                alt=""
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-[#110000]/0 via-[#110000]/0 to-[#110000]"></div>
-              <span className="absolute top-4 right-4 text-lg font-light text-[#F5F5F5]">03</span>
-            </div>
-          </div>
 
-          {/* Episode 4 */}
-          <div className="grid lg:grid-cols-[305px_1fr_305px] gap-8 mb-8 pb-8 border-b-[1px] border-[#252525]">
-            <div className="hidden lg:flex bg-[#5D25E0] rounded-lg h-[324px] items-center justify-center relative">
-              <span className="text-2xl font-medium text-white tracking-tight">clientlogo</span>
+          <div className="mt-12 p-6 border-[1px] border-[#3F6B4F] rounded-lg bg-[#3F6B4F]">
+            <p className="text-base font-light leading-relaxed text-white">
+              This creates a materially better risk-adjusted return profile.
+            </p>
             </div>
-            <div className="flex flex-col justify-center">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-sm font-medium text-[#F5F5F5]">Episode 04</span>
-                <span className="w-1.5 h-1.5 rounded-lg bg-[#252525]"></span>
-                <span className="text-xs font-light text-[#F5F5F5]">Housing & communities</span>
-              </div>
-              <h3 className="text-3xl font-light leading-tight mb-6 tracking-tight">
-                Housing, communities,
-                <br />
-                and alternative building formats
-              </h3>
-              <p className="text-xs font-light leading-relaxed mb-8 text-[#F5F5F5]">
-                Exploring new models for housing development,
-                <br />
-                community planning, and alternative building formats
-                <br />
-                that are reshaping the residential market.
-              </p>
-              <button className="border-[1px] border-white bg-white text-[#070707] px-4 py-3 rounded-lg flex items-center gap-4 text-xs font-light tracking-tight w-fit hover:bg-[#F5F5F5] hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out">
-                <span>WATCH EPISODE</span>
-              </button>
-            </div>
-            <div className="relative rounded-lg overflow-hidden h-[324px]">
-              <img
-                src="https://api.builder.io/api/v1/image/assets/TEMP/5d6fb6fa20a01cec195146d5ee0218ef6bda9038?width=610"
-                alt=""
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#070707]"></div>
-              <span className="absolute top-4 right-4 text-lg font-light text-[#F5F5F5]">04</span>
-            </div>
-          </div>
+          <GalleryGrid
+            images={whyModularGallery}
+            className="mt-12"
+            columns="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+          />
 
-          {/* Episode 5 */}
-          <div className="grid lg:grid-cols-[305px_1fr_305px] gap-8 mb-12 pb-8 border-b-[1px] border-[#252525]">
-            <div className="hidden lg:flex bg-[#181818] rounded-lg h-[324px] items-center justify-center relative">
-              <span className="text-2xl font-medium text-white tracking-tight">clientlogo</span>
-            </div>
-            <div className="flex flex-col justify-center">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-sm font-medium text-[#F5F5F5]">Episode 05</span>
-                <span className="w-1.5 h-1.5 rounded-lg bg-[#252525]"></span>
-                <span className="text-xs font-light text-[#F5F5F5]">Logistics & financing</span>
-              </div>
-              <h3 className="text-3xl font-light leading-tight mb-6 tracking-tight">
-                Logistics, financing,
-                <br />
-                and system-level thinking
-              </h3>
-              <p className="text-xs font-light leading-relaxed mb-8 text-[#F5F5F5]">
-                Deep dive into the systems, logistics, and financing
-                <br />
-                models that enable modular and off-site construction
-                <br />
-                at scale.
-              </p>
-              <button className="border-[1px] border-white bg-white text-[#070707] px-4 py-3 rounded-lg flex items-center gap-4 text-xs font-light tracking-tight w-fit hover:bg-[#F5F5F5] hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out">
-                <span>WATCH EPISODE</span>
+          {/* CTA */}
+          <div className="flex justify-center mt-12">
+            <button 
+              onClick={() => {
+                ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="border-[1px] border-[#3F6B4F] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(63,107,79,0.3)] hover:border-[#2d4f3a] hover:scale-[1.02] transition-all duration-500 ease-out"
+            >
+              <span>REQUEST PRICING & LAYOUTS</span>
+              <ArrowRight className="w-4 h-4" />
               </button>
-            </div>
-            <div className="relative rounded-lg overflow-hidden h-[324px]">
-              <img
-                src="https://api.builder.io/api/v1/image/assets/TEMP/8c080dbbb198d65cb11fba4b737dec1773c4a877?width=610"
-                alt=""
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#070707]"></div>
-              <span className="absolute top-4 right-4 text-lg font-light text-[#F5F5F5]">05</span>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Spacer */}
-      <div className="h-20 bg-[#070707]"></div>
 
-      {/* Newsletter Section */}
-      <section className="bg-[#070707] py-16 px-4 md:px-8">
-        <div className="w-full">
-          <div className="grid lg:grid-cols-2 gap-12 mb-16">
-            <div>
-              <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-6">Stay ahead of the future of building.</h2>
-              <p className="text-lg font-light leading-relaxed text-[#F5F5F5]">
-                Join developers, architects, and innovators receiving modular/off-site insights, industry breakdowns, and FutureBuilt updates.
-              </p>
+      {/* Process Section */}
+      <section ref={processSectionRef} className="bg-[#faf2dc] py-16 px-4 md:px-8">
+        <div className="w-full max-w-[1400px] mx-auto">
+          <div className="mb-8">
+            <div className="border-[1px] border-gray-300 rounded-lg px-4 py-2 inline-flex items-center gap-2">
+              <span className="text-sm font-medium tracking-tight text-[#070707]">PROCESS</span>
             </div>
-            <div className="flex flex-col justify-end">
-              <div className="flex gap-4">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-1 border-[1px] border-[#252525] bg-[#232323] px-4 py-3 rounded-lg text-sm font-light text-[#F5F5F5] placeholder:text-[#F5F5F5]/60 focus:outline-none focus:border-[1px] focus:border-[#F5F5F5] transition-colors"
-                />
-                <button className="border-[1px] border-white bg-white text-[#070707] px-6 py-3 rounded-lg flex items-center gap-4 text-xs font-light tracking-tight hover:bg-[#F5F5F5] hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out">
-                  <span>SUBSCRIBE</span>
-                  </button>
               </div>
+
+          <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-8">
+            From Concept to Operation
+          </h2>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+            {[
+              "Site review and feasibility",
+              "Layout design and budget confirmation",
+              "Manufacturing and fit-out",
+              "Delivery and installation",
+              "Tech integration and launch"
+            ].map((step, idx) => (
+              <div key={idx} className="border-[1px] border-[#3F6B4F] rounded-lg p-6 bg-[#3F6B4F]">
+                <div className="flex items-start gap-4">
+                  <span className="text-2xl font-medium text-white flex-shrink-0">{idx + 1}</span>
+                  <p className="text-base font-light leading-relaxed text-white">{step}</p>
             </div>
           </div>
+            ))}
             </div>
-      </section>
 
-      {/* Infinite Spa Section */}
-      <section className="bg-[#070707] py-16 px-4 md:px-8">
-        <div className="w-full">
-          <div className="border-[1px] border-[#252525] rounded-lg px-4 py-2 inline-flex items-center gap-2 mb-12">
-            <span className="text-sm font-medium tracking-tight text-[#F5F5F5]">POWERED BY</span>
-          </div>
+          <div className="mt-12 p-6 border-[1px] border-[#3F6B4F] rounded-lg bg-[#3F6B4F]">
+            <p className="text-base font-light leading-relaxed text-white">
+              Typical timelines range from 8–20 weeks depending on configuration.
+            </p>
+            </div>
+          <GalleryGrid
+            images={processGallery}
+            className="mt-12"
+            columns="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+          />
 
-          <div className="grid lg:grid-cols-2 gap-12">
-                <div>
-              <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-6">Infinite Spa</h2>
-              <p className="text-lg font-light leading-relaxed mb-6 text-[#F5F5F5]">
-                Turnkey modular wellness suites designed for boutique hotels, resorts, and destination properties.
-              </p>
-              <p className="text-sm font-light leading-relaxed mb-8 text-[#F5F5F5]">
-                A modular amenity that increases ADR, drives occupancy, and installs in a single day.
-              </p>
-              <button className="border-[1px] border-white bg-white text-[#070707] px-4 py-3 rounded-lg flex items-center gap-4 text-xs font-light tracking-tight w-fit hover:bg-[#F5F5F5] transition-colors">
-                <span>LEARN MORE</span>
-                  </button>
-            </div>
-            <div className="relative rounded-lg overflow-hidden h-[500px]">
-              <img
-                src="https://api.builder.io/api/v1/image/assets/TEMP/67ed5901b5d88d7fc811bb6c6a80cf1dd1da0871?width=756"
-                alt="Infinite Spa"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/70"></div>
-            </div>
+          {/* CTA */}
+          <div className="flex justify-center mt-12">
+              <button
+                onClick={() => {
+                ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+              className="border-[1px] border-[#3F6B4F] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(63,107,79,0.3)] hover:border-[#2d4f3a] hover:scale-[1.02] transition-all duration-500 ease-out"
+              >
+              <span>REQUEST PRICING & LAYOUTS</span>
+              <ArrowRight className="w-4 h-4" />
+              </button>
           </div>
         </div>
       </section>
 
-      {/* Sponsor 2 Section */}
-      <section className="bg-[#070707] py-16 px-4 md:px-8">
-        <div className="w-full">
-          <div className="grid lg:grid-cols-2 gap-12">
-            <div className="relative rounded-lg overflow-hidden h-[500px] order-2 lg:order-1">
-              <img
-                src="https://api.builder.io/api/v1/image/assets/TEMP/67ed5901b5d88d7fc811bb6c6a80cf1dd1da0871?width=756"
-                alt="Sponsor 2"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/70"></div>
+
+      {/* CTA Section */}
+      <section ref={ctaSectionRef} className="bg-[#faf2dc] py-20 px-4 md:px-8">
+        <div className="w-full max-w-[1400px] mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-6">
+              Explore a Modular Golf Deployment
+            </h2>
+            <p className="text-lg font-light leading-relaxed mb-8 max-w-2xl mx-auto">
+              Request pricing ranges, layout concepts, site feasibility feedback, and ROI modeling support.
+            </p>
             </div>
-            <div className="order-1 lg:order-2">
-              <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-6">Sponsor 2</h2>
-              <p className="text-lg font-light leading-relaxed mb-6 text-[#F5F5F5]">
-                Innovative solutions for the modern built environment.
-              </p>
-              <p className="text-sm font-light leading-relaxed mb-8 text-[#F5F5F5]">
-                Transforming the way buildings are designed, constructed, and operated.
-              </p>
-              <button className="border-[1px] border-white bg-white text-[#070707] px-4 py-3 rounded-lg flex items-center gap-4 text-xs font-light tracking-tight w-fit hover:bg-[#F5F5F5] hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out">
-                <span>LEARN MORE</span>
+
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            <div className="border-[1px] border-[#3F6B4F] rounded-lg p-8 bg-[#3F6B4F]">
+              <h3 className="text-xl font-medium mb-4 text-white">Request:</h3>
+              <ul className="space-y-3 text-base font-light leading-relaxed text-white">
+                <li className="flex items-start gap-3">
+                  <span className="text-white mt-2">•</span>
+                  <span>Pricing ranges</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-white mt-2">•</span>
+                  <span>Layout concepts</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-white mt-2">•</span>
+                  <span>Site feasibility feedback</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-white mt-2">•</span>
+                  <span>ROI modeling support</span>
+                </li>
+              </ul>
+            </div>
+
+              <button
+                onClick={() => {
+                // CTA action can be added here
+                }}
+              className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white rounded-lg flex items-center justify-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out w-full h-full min-h-[200px]"
+              >
+              <span>REQUEST PRICING & LAYOUTS</span>
+              <ArrowRight className="w-4 h-4" />
               </button>
             </div>
-          </div>
-        </div>
+            </div>
       </section>
 
-      {/* Spacer */}
-      <div className="h-20 bg-[#070707]"></div>
-
-      {/* Sponsor 3 Section */}
-      <section className="bg-[#070707] py-16 px-4 md:px-8">
-        <div className="w-full">
-          <div className="grid lg:grid-cols-2 gap-12">
-            <div>
-              <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-6">Sponsor 3</h2>
-              <p className="text-lg font-light leading-relaxed mb-6 text-[#F5F5F5]">
-                Leading innovation in sustainable construction and development.
-              </p>
-              <p className="text-sm font-light leading-relaxed mb-8 text-[#F5F5F5]">
-                Empowering the next generation of builders and developers.
-              </p>
-              <button className="border-[1px] border-white bg-white text-[#070707] px-4 py-3 rounded-lg flex items-center gap-4 text-xs font-light tracking-tight w-fit hover:bg-[#F5F5F5] hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out">
-                <span>LEARN MORE</span>
-              </button>
-            </div>
-            <div className="relative rounded-lg overflow-hidden h-[500px]">
-              <img
-                src="https://api.builder.io/api/v1/image/assets/TEMP/67ed5901b5d88d7fc811bb6c6a80cf1dd1da0871?width=756"
-                alt="Sponsor 3"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/70"></div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Footer */}
-      <footer className="bg-[#070707] py-16 px-4 md:px-8">
-        <div className="w-full">
-          {/* Mobile Footer - Hidden on md and up */}
-          <div className="md:hidden">
-            {/* Mobile Logo */}
-            <div className="text-center mb-8">
-              <h2 className="text-4xl font-medium leading-none tracking-tight mb-6">
-                FUTUREBUILT
-              </h2>
-            </div>
-
-            {/* Mobile Navigation - Vertical Stack */}
-            <nav className="flex flex-col gap-4 mb-8">
-              <button
-                onClick={() => {
-                  heroSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                className="text-center text-sm font-medium text-[#F5F5F5] hover:text-white hover:pl-2 transition-all duration-500 ease-out py-2 border-b-[1px] border-[#252525]"
-              >
-                Homepage
-              </button>
-              <button
-                onClick={() => {
-                  aboutSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                className="text-center text-sm font-medium text-[#F5F5F5] hover:text-white hover:pl-2 transition-all duration-500 ease-out py-2 border-b-[1px] border-[#252525]"
-              >
-                About
-              </button>
-              <button
-                onClick={() => {
-                  episodesSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                className="text-center text-sm font-medium text-[#F5F5F5] hover:text-white hover:pl-2 transition-all duration-500 ease-out py-2 border-b-[1px] border-[#252525]"
-              >
-                Watch Episodes
-              </button>
-              <button
-                onClick={() => {
-                  developerToolsSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                className="text-center text-sm font-medium text-[#F5F5F5] hover:text-white hover:pl-2 transition-all duration-500 ease-out py-2 border-b-[1px] border-[#252525]"
-              >
-                Developer Tools
-              </button>
-              <button
-                onClick={() => {
-                  beAGuestSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-                className="text-center text-sm font-medium text-[#F5F5F5] hover:text-white hover:pl-2 transition-all duration-500 ease-out py-2 border-b-[1px] border-[#252525]"
-              >
-                Be a Guest
-              </button>
-            </nav>
-
-            {/* Mobile Contact Info - Stacked */}
-            <div className="flex flex-col gap-4 mb-8">
-              <a href="mailto:info@futurebuilt.com" className="text-sm font-medium text-[#F5F5F5] hover:text-white transition-colors text-center">
-                info@futurebuilt.com
-              </a>
-              <a href="tel:+1234567890" className="text-sm font-medium text-[#F5F5F5] hover:text-white transition-colors text-center">
-                +1 (234) 567-890
-              </a>
-            </div>
-
-            {/* Mobile Social Links - Centered */}
-            <div className="flex justify-center gap-3 mb-8">
-              <a
-                href="https://www.linkedin.com/company/futurebuilt"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-14 h-14 rounded-lg border-[1px] border-[#252525] flex items-center justify-center hover:bg-white/5 hover:border-white/40 hover:scale-110 hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-all duration-500 ease-out"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="w-6 h-6 text-[#F5F5F5]" />
-              </a>
-              <a
-                href="https://twitter.com/futurebuilt"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-14 h-14 rounded-lg border-[1px] border-[#252525] flex items-center justify-center hover:bg-white/5 hover:border-white/40 hover:scale-110 hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-all duration-500 ease-out"
-                aria-label="Twitter"
-              >
-                <Twitter className="w-6 h-6 text-[#F5F5F5]" />
-              </a>
-              <a
-                href="https://www.instagram.com/futurebuilt"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-14 h-14 rounded-lg border-[1px] border-[#252525] flex items-center justify-center hover:bg-white/5 hover:border-white/40 hover:scale-110 hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-all duration-500 ease-out"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-6 h-6 text-[#F5F5F5]" />
-              </a>
-              <a
-                href="https://www.youtube.com/@futurebuilt"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-14 h-14 rounded-lg border-[1px] border-[#252525] flex items-center justify-center hover:bg-white/5 hover:border-white/40 hover:scale-110 hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-all duration-500 ease-out"
-                aria-label="YouTube"
-              >
-                <Youtube className="w-6 h-6 text-[#F5F5F5]" />
-              </a>
-            </div>
-
-            {/* Mobile Bottom Border */}
-            <div className="border-t-[1px] border-[#252525] pt-4">
-              <div className="flex flex-wrap justify-center gap-4 text-xs font-light text-[#F5F5F5]">
-                <a href="#" className="text-[#F5F5F5] hover:text-white transition-colors whitespace-nowrap">Privacy Policy</a>
-                <a href="#" className="text-[#F5F5F5] hover:text-white transition-colors whitespace-nowrap">Terms and Conditions</a>
-              </div>
-            </div>
-          </div>
-
-          {/* Desktop Footer - Hidden on mobile, shown on md and up */}
-          <div className="hidden md:block">
-            {/* Large Logo */}
-            <h2 className="text-center text-[60px] sm:text-[80px] md:text-[120px] lg:text-[160px] xl:text-[200px] 2xl:text-[240px] font-medium leading-none tracking-[-0.02em] mb-16 whitespace-nowrap overflow-hidden">
-              FUTUREBUILT
+      <footer className="bg-[#faf2dc] py-16 px-4 md:px-8 rounded-t-3xl">
+        <div className="w-full max-w-[1400px] mx-auto">
+          <div className="grid md:grid-cols-3 gap-12 mb-12">
+            {/* Brand */}
+            <div>
+              <h2 className="text-3xl font-medium leading-tight tracking-tight mb-3 text-[#070707]">
+                MODULAR GOLF PODS
             </h2>
+              <p className="text-sm font-light text-[#070707]/70 mb-4">
+                Premium, Portable Golf Experiences for Clubs, Resorts & Developments
+              </p>
+              <p className="text-xs font-light text-[#070707]/60">
+                Powered by FutureBuilt
+              </p>
+            </div>
 
             {/* Navigation */}
-            <nav className="flex flex-wrap justify-center gap-6 mb-8 text-xs font-medium text-[#F5F5F5]">
+            <div>
+              <h3 className="text-sm font-medium mb-4 tracking-tight text-[#070707]">Navigation</h3>
+              <nav className="flex flex-col gap-3">
             <button
               onClick={() => {
                 heroSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }}
-              className="text-[#F5F5F5] hover:text-white hover:scale-110 transition-all duration-500 ease-out cursor-pointer"
+                  className="text-left text-sm font-light text-[#070707] hover:text-black transition-colors"
             >
-              Homepage
+                  Home
             </button>
             <button
               onClick={() => {
-                aboutSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    problemSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }}
-              className="text-[#F5F5F5] hover:text-white hover:scale-110 transition-all duration-500 ease-out cursor-pointer"
+                  className="text-left text-sm font-light text-[#070707] hover:text-black transition-colors"
             >
-              About
+                  The Problem
             </button>
             <button
               onClick={() => {
-                episodesSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    solutionSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }}
-              className="text-[#F5F5F5] hover:text-white hover:scale-110 transition-all duration-500 ease-out cursor-pointer"
+                  className="text-left text-sm font-light text-[#070707] hover:text-black transition-colors"
             >
-              Watch Episodes
+                  The Solution
             </button>
             <button
               onClick={() => {
-                developerToolsSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    useCasesSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }}
-              className="text-[#F5F5F5] hover:text-white hover:scale-110 transition-all duration-500 ease-out cursor-pointer"
+                  className="text-left text-sm font-light text-[#070707] hover:text-black transition-colors"
             >
-              Developer Tools
+                  Use Cases
             </button>
             <button
               onClick={() => {
-                beAGuestSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }}
-              className="text-[#F5F5F5] hover:text-white hover:scale-110 transition-all duration-500 ease-out cursor-pointer"
+                  className="text-left text-sm font-light text-[#070707] hover:text-black transition-colors"
             >
-              Be a Guest
+                  Request Pricing
             </button>
             </nav>
-
-            {/* Contact Info */}
-            <div className="flex flex-wrap justify-center gap-8 mb-24 text-xs font-medium text-[#F5F5F5]">
-              <a href="mailto:info@futurebuilt.com" className="text-[#F5F5F5] hover:text-white transition-colors">
-                info@futurebuilt.com
-              </a>
-              <a href="tel:+1234567890" className="text-[#F5F5F5] hover:text-white transition-colors">
-                +1 (234) 567-890
-              </a>
             </div>
 
-            {/* Bottom Border */}
-            <div className="border-t-[1px] border-[#252525] pt-2">
-              <div className="flex flex-nowrap justify-between items-center gap-4 text-xs font-light text-[#F5F5F5]">
-                <div className="flex gap-6 items-center flex-nowrap">
-                  <a href="#" className="text-[#F5F5F5] hover:text-white transition-colors whitespace-nowrap">Privacy Policy</a>
-                  <a href="#" className="text-[#F5F5F5] hover:text-white transition-colors whitespace-nowrap">Terms and Conditions</a>
+            {/* Contact & Legal */}
+            <div>
+              <h3 className="text-sm font-medium mb-4 tracking-tight text-[#070707]">Contact</h3>
+              <div className="flex flex-col gap-3 mb-6">
+                <a href="mailto:info@modulargolfpods.com" className="text-sm font-light text-[#070707] hover:text-black transition-colors">
+                  info@modulargolfpods.com
+              </a>
+            </div>
+              <div className="flex flex-col gap-2 text-xs font-light text-[#070707]/60">
+                <a href="#" className="hover:text-black transition-colors">Privacy Policy</a>
+                <a href="#" className="hover:text-black transition-colors">Terms of Service</a>
                 </div>
-                <div className="flex gap-2 items-center">
-                  <a
-                    href="https://www.linkedin.com/company/futurebuilt"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-11 h-11 rounded-lg border-[1px] border-[#252525] flex items-center justify-center hover:bg-white/5 hover:border-white/40 hover:scale-110 hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-all duration-500 ease-out"
-                    aria-label="LinkedIn"
-                  >
-                    <Linkedin className="w-5 h-5 text-[#F5F5F5]" />
-                  </a>
-                  <a
-                    href="https://twitter.com/futurebuilt"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-11 h-11 rounded-lg border-[1px] border-[#252525] flex items-center justify-center hover:bg-white/5 hover:border-white/40 hover:scale-110 hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-all duration-500 ease-out"
-                    aria-label="Twitter"
-                  >
-                    <Twitter className="w-5 h-5 text-[#F5F5F5]" />
-                  </a>
-                  <a
-                    href="https://www.instagram.com/futurebuilt"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-11 h-11 rounded-lg border-[1px] border-[#252525] flex items-center justify-center hover:bg-white/5 hover:border-white/40 hover:scale-110 hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-all duration-500 ease-out"
-                    aria-label="Instagram"
-                  >
-                    <Instagram className="w-5 h-5 text-[#F5F5F5]" />
-                  </a>
-                  <a
-                    href="https://www.youtube.com/@futurebuilt"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-11 h-11 rounded-lg border-[1px] border-[#252525] flex items-center justify-center hover:bg-white/5 hover:border-white/40 hover:scale-110 hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-all duration-500 ease-out"
-                    aria-label="YouTube"
-                  >
-                    <Youtube className="w-5 h-5 text-[#F5F5F5]" />
-                  </a>
                 </div>
               </div>
+
+          {/* Bottom Bar */}
+          <div className="border-t-[1px] border-gray-300 pt-6">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-light text-[#070707]/60">
+              <p>© {new Date().getFullYear()} Modular Golf Pods. All rights reserved.</p>
+              <p>Modular Golf Solutions</p>
             </div>
           </div>
         </div>
