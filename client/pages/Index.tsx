@@ -699,14 +699,6 @@ export default function Index() {
                 <ul className="space-y-3 text-base font-light leading-relaxed">
                   <li className="flex items-center gap-3">
                     <span className="text-gray-400">•</span>
-                    <span><strong>Estimated Build Cost:</strong> ~$100,000 per bay</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <span className="text-gray-400">•</span>
-                    <span><strong>Target MSRP:</strong> $150,000–$170,000 per bay</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <span className="text-gray-400">•</span>
                     <span>Multi-bay discounts available</span>
                   </li>
                   <li className="flex items-center gap-3">
