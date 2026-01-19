@@ -5,11 +5,30 @@ import { useRef, useState } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { supabase } from "@/lib/supabase";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Index() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [formOpen, setFormOpen] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    companyName: "",
+    name: "",
+    email: "",
+    phone: "",
+  });
   const heroSectionRef = useRef<HTMLDivElement>(null);
   const problemSectionRef = useRef<HTMLDivElement>(null);
   const solutionSectionRef = useRef<HTMLDivElement>(null);
@@ -29,15 +48,15 @@ export default function Index() {
   ];
   // All other galleries use unique images - no overlaps between non-showcase galleries
   const introGallery = [
-    galleryImages[16],
-    galleryImages[17],
-    galleryImages[18],
-    galleryImages[19],
+    { src: "/pics/Copy%20of%20IMG_6223%20Large.jpeg", alt: "Modular golf pod interior" },
+    { src: "/pics/Copy%20of%20IMG_6233%20Large.jpeg", alt: "Modular golf pod interior" },
+    { src: "/pics/Copy%20of%20IMG_6226%20Large.jpeg", alt: "Modular golf pod interior" },
+    { src: "/pics/Copy%20of%20IMG_6284%20Large.jpeg", alt: "Modular golf pod interior" },
   ];
   const problemGallery = [
-    galleryImages[20],
-    galleryImages[21],
-    galleryImages[22],
+    { src: "/pics/Copy%20of%20IMG_6268%20Large.jpeg", alt: "Modular golf pod interior" },
+    { src: "/pics/Copy%20of%20IMG_6274%20Large.jpeg", alt: "Modular golf pod interior" },
+    { src: "/pics/Copy%20of%20IMG_6328%20Large.jpeg", alt: "Modular golf pod interior" },
   ];
   const solutionGallery = [
     galleryImages[23],
@@ -45,9 +64,9 @@ export default function Index() {
     galleryImages[25],
   ];
   const useCasesGallery = [
-    galleryImages[15],
-    galleryImages[9],
-    galleryImages[13],
+    { src: "/pics/Copy%20of%20IMG_6299%20Large.jpeg", alt: "Modular golf pod interior" },
+    { src: "/pics/Copy%20of%20IMG_6232%20Large.jpeg", alt: "Modular golf pod interior" },
+    { src: "/pics/Copy%20of%20IMG_6296%20Large.jpeg", alt: "Modular golf pod interior" },
   ];
   const economicsGallery = [
     galleryImages[29],
@@ -55,8 +74,8 @@ export default function Index() {
   ];
   // These reuse some showcaseGallery images but are unique from each other
   const configurationsGallery = [
-    galleryImages[0],
-    galleryImages[1],
+    { src: "/pics/Copy%20of%20IMG_6266%20Large.jpeg", alt: "Modular golf pod interior" },
+    { src: "/pics/Copy%20of%20IMG_6246%20Large.jpeg", alt: "Modular golf pod interior" },
   ];
   const whyModularGallery = [
     galleryImages[2],
@@ -71,6 +90,54 @@ export default function Index() {
   const ctaGallery = [
     galleryImages[8],
   ];
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      // Insert data into Supabase
+      const { data, error } = await supabase
+        .from('golfpod_leads')
+        .insert({
+          company_name: formData.companyName,
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || null
+        })
+        .select();
+
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+
+      // Success - data was inserted
+      console.log('Lead submitted successfully:', data);
+      
+      // Show thank you message
+      setFormSubmitted(true);
+      
+      // Reset form data
+      setFormData({ companyName: "", name: "", email: "", phone: "" });
+      
+      // Close form after 3 seconds
+      setTimeout(() => {
+        setFormOpen(false);
+        setFormSubmitted(false);
+      }, 3000);
+      
+    } catch (error: any) {
+      // Handle errors
+      console.error('Error submitting form:', error);
+      alert(error?.message || 'Something went wrong. Please try again.');
+    }
+  };
+
+  const handleCloseForm = () => {
+    setFormOpen(false);
+    setFormSubmitted(false);
+    setFormData({ companyName: "", name: "", email: "", phone: "" });
+  };
 
   return (
     <div className="min-h-screen bg-[#faf2dc] text-[#070707]">
@@ -90,13 +157,13 @@ export default function Index() {
 
           {/* Navigation Island - Desktop Only */}
           <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2">
-            <div className="flex items-center gap-4 border-[1px] border-gray-300 bg-[#faf2dc] px-4 py-3 rounded-lg h-[46px]">
-              <nav className="flex items-center gap-6">
+            <div className="flex items-center border-[1px] border-gray-300 bg-[#faf2dc] px-6 py-3 rounded-lg h-[46px]">
+              <nav className="flex items-center gap-4">
                 <button
                   onClick={() => {
                     problemSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   }}
-                  className="text-sm font-light tracking-tight text-[#070707] hover:text-black transition-all duration-500 ease-out"
+                  className="text-sm font-light tracking-tight text-[#070707] hover:text-black transition-all duration-500 ease-out whitespace-nowrap"
                 >
                   THE PROBLEM
           </button>
@@ -104,7 +171,7 @@ export default function Index() {
                   onClick={() => {
                     solutionSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   }}
-                  className="text-sm font-light tracking-tight text-[#070707] hover:text-black transition-all duration-500 ease-out"
+                  className="text-sm font-light tracking-tight text-[#070707] hover:text-black transition-all duration-500 ease-out whitespace-nowrap"
                 >
                   THE SOLUTION
                 </button>
@@ -112,7 +179,7 @@ export default function Index() {
                   onClick={() => {
                     useCasesSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   }}
-                  className="text-sm font-light tracking-tight text-[#070707] hover:text-black transition-all duration-500 ease-out"
+                  className="text-sm font-light tracking-tight text-[#070707] hover:text-black transition-all duration-500 ease-out whitespace-nowrap"
                 >
                   USE CASES
                 </button>
@@ -120,9 +187,17 @@ export default function Index() {
                   onClick={() => {
                     economicsSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                   }}
-                  className="text-sm font-light tracking-tight text-[#070707] hover:text-black transition-all duration-500 ease-out"
+                  className="text-sm font-light tracking-tight text-[#070707] hover:text-black transition-all duration-500 ease-out whitespace-nowrap"
                 >
                   ECONOMICS
+                </button>
+                <button
+                  onClick={() => {
+                    processSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                  className="text-sm font-light tracking-tight text-[#070707] hover:text-black transition-all duration-500 ease-out whitespace-nowrap"
+                >
+                  PROCESS
                 </button>
               </nav>
         </div>
@@ -133,7 +208,7 @@ export default function Index() {
             {/* Mobile CTA Button */}
             <button 
               onClick={() => {
-                ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                setFormOpen(true);
                 setMobileMenuOpen(false);
               }}
               className="md:hidden border-[1px] border-gray-300 bg-[#3F6B4F] text-white px-3 py-3 rounded-lg text-xs font-light tracking-tight hover:bg-[#2d4f3a] transition-all duration-500 ease-out whitespace-nowrap h-[46px] flex items-center"
@@ -144,22 +219,20 @@ export default function Index() {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden border-[1px] border-gray-300 bg-[#faf2dc] p-2 rounded-lg hover:border-gray-400 transition-all duration-500 ease-out h-[46px] w-[46px] flex items-center justify-center"
+              className="md:hidden border-[1px] border-gray-300 bg-[#3F6B4F] p-2 rounded-lg hover:bg-[#2d4f3a] hover:border-gray-400 transition-all duration-500 ease-out h-[46px] w-[46px] flex items-center justify-center"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
-                <X className="w-5 h-5 text-[#070707]" />
+                <X className="w-5 h-5 text-white" />
               ) : (
-                <Menu className="w-5 h-5 text-[#070707]" />
+                <Menu className="w-5 h-5 text-white" />
               )}
             </button>
 
             {/* Desktop CTA Button */}
             <div className="hidden md:flex">
               <button 
-                onClick={() => {
-                  ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
+                onClick={() => setFormOpen(true)}
                 className="border-[1px] border-gray-300 bg-[#3F6B4F] text-white px-6 py-3 rounded-lg text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-gray-400 hover:shadow-[0_0_15px_rgba(63,107,79,0.2)] transition-all duration-500 ease-out whitespace-nowrap h-[46px] flex items-center"
               >
                 REQUEST PRICING
@@ -208,6 +281,15 @@ export default function Index() {
               >
                 ECONOMICS
               </button>
+              <button
+                onClick={() => {
+                  processSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  setMobileMenuOpen(false);
+                }}
+                className="text-left text-sm font-light tracking-tight text-[#070707] hover:text-black py-2 px-4 rounded-lg hover:bg-[#faf2dc]/80 transition-all duration-500 ease-out"
+              >
+                PROCESS
+              </button>
             </nav>
                     </div>
         )}
@@ -236,11 +318,24 @@ export default function Index() {
               
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-3">
-                <button className="border-[1px] border-[#faf2dc] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(250,242,220,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out">
+                <button 
+                  onClick={() => setFormOpen(true)}
+                  className="border-[1px] border-[#faf2dc] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(250,242,220,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out"
+                >
                   <span>REQUEST PRICING & LAYOUTS</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
-                <button className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out">
+                <button 
+                  onClick={() => {
+                    const link = document.createElement('a');
+                    link.href = '/LOFTD_plans.pdf';
+                    link.download = 'LOFTD_plans.pdf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }}
+                  className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
+                >
                   <Download className="w-4 h-4" />
                   <span>DOWNLOAD SPEC SHEET</span>
               </button>
@@ -269,15 +364,27 @@ export default function Index() {
           />
 
           {/* CTA */}
-          <div className="flex justify-center mt-12">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 mt-12">
               <button 
-                onClick={() => {
-                ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
-              className="border-[1px] border-[#3F6B4F] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(63,107,79,0.3)] hover:border-[#2d4f3a] hover:scale-[1.02] transition-all duration-500 ease-out"
+                onClick={() => setFormOpen(true)}
+                className="border-[1px] border-[#3F6B4F] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(63,107,79,0.3)] hover:border-[#2d4f3a] hover:scale-[1.02] transition-all duration-500 ease-out"
               >
               <span>REQUEST PRICING & LAYOUTS</span>
               <ArrowRight className="w-4 h-4" />
+              </button>
+              <button 
+                onClick={() => {
+                  const link = document.createElement('a');
+                  link.href = '/LOFTD_plans.pdf';
+                  link.download = 'LOFTD_plans.pdf';
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+                className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
+              >
+                <Download className="w-4 h-4" />
+                <span>DOWNLOAD SPEC SHEET</span>
               </button>
           </div>
         </div>
@@ -354,7 +461,7 @@ export default function Index() {
           />
 
           {/* CTA */}
-          <div className="flex justify-center mt-12">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 mt-12">
             <button 
               onClick={() => {
                 ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -363,6 +470,20 @@ export default function Index() {
             >
               <span>REQUEST PRICING & LAYOUTS</span>
               <ArrowRight className="w-4 h-4" />
+            </button>
+            <button 
+              onClick={() => {
+                const link = document.createElement('a');
+                link.href = '/LOFTD_plans.pdf';
+                link.download = 'LOFTD_plans.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }}
+              className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
+            >
+              <Download className="w-4 h-4" />
+              <span>DOWNLOAD SPEC SHEET</span>
             </button>
           </div>
         </div>
@@ -408,15 +529,27 @@ export default function Index() {
               </div>
 
           {/* CTA */}
-          <div className="flex justify-center mt-12">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 mt-12">
             <button 
-              onClick={() => {
-                ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
+              onClick={() => setFormOpen(true)}
               className="border-[1px] border-[#faf2dc] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(250,242,220,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out"
             >
               <span>REQUEST PRICING & LAYOUTS</span>
               <ArrowRight className="w-4 h-4" />
+            </button>
+            <button 
+              onClick={() => {
+                const link = document.createElement('a');
+                link.href = '/LOFTD_plans.pdf';
+                link.download = 'LOFTD_plans.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }}
+              className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
+            >
+              <Download className="w-4 h-4" />
+              <span>DOWNLOAD SPEC SHEET</span>
             </button>
           </div>
         </div>
@@ -521,15 +654,27 @@ export default function Index() {
           />
 
           {/* CTA */}
-          <div className="flex justify-center mt-12">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 mt-12">
             <button 
-              onClick={() => {
-                ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
+              onClick={() => setFormOpen(true)}
               className="border-[1px] border-[#faf2dc] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(250,242,220,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out"
             >
               <span>REQUEST PRICING & LAYOUTS</span>
               <ArrowRight className="w-4 h-4" />
+            </button>
+            <button 
+              onClick={() => {
+                const link = document.createElement('a');
+                link.href = '/LOFTD_plans.pdf';
+                link.download = 'LOFTD_plans.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }}
+              className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
+            >
+              <Download className="w-4 h-4" />
+              <span>DOWNLOAD SPEC SHEET</span>
             </button>
                 </div>
               </div>
@@ -593,7 +738,7 @@ export default function Index() {
           />
 
           {/* CTA */}
-          <div className="flex justify-center mt-12">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 mt-12">
             <button 
               onClick={() => {
                 ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -602,9 +747,23 @@ export default function Index() {
             >
               <span>REQUEST PRICING & LAYOUTS</span>
               <ArrowRight className="w-4 h-4" />
+            </button>
+            <button 
+              onClick={() => {
+                const link = document.createElement('a');
+                link.href = '/LOFTD_plans.pdf';
+                link.download = 'LOFTD_plans.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }}
+              className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
+            >
+              <Download className="w-4 h-4" />
+              <span>DOWNLOAD SPEC SHEET</span>
                   </button>
-                </div>
-              </div>
+          </div>
+        </div>
       </section>
 
 
@@ -615,7 +774,7 @@ export default function Index() {
             <div className="border-[1px] border-gray-300 rounded-lg px-4 py-2 inline-flex items-center gap-2">
               <span className="text-sm font-medium tracking-tight text-[#070707]">CONFIGURATIONS</span>
             </div>
-          </div>
+              </div>
 
           <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-8">
             Flexible Layouts
@@ -627,14 +786,14 @@ export default function Index() {
               <p className="text-base font-light leading-relaxed text-white">
                 Compact footprint, fast deployment
               </p>
-        </div>
+          </div>
 
             <div className="border-[1px] border-[#3F6B4F] rounded-lg p-8 bg-[#3F6B4F]">
               <h3 className="text-2xl font-medium mb-4 tracking-tight text-white">2–4 Bay Installations</h3>
               <p className="text-base font-light leading-relaxed text-white">
                 Shared infrastructure efficiencies
           </p>
-        </div>
+          </div>
 
             <div className="border-[1px] border-[#3F6B4F] rounded-lg p-8 bg-[#3F6B4F]">
               <h3 className="text-2xl font-medium mb-4 tracking-tight text-white">Custom Branding</h3>
@@ -663,7 +822,7 @@ export default function Index() {
           />
 
           {/* CTA */}
-          <div className="flex justify-center mt-12">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 mt-12">
             <button 
               onClick={() => {
                 ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -672,9 +831,23 @@ export default function Index() {
             >
               <span>REQUEST PRICING & LAYOUTS</span>
               <ArrowRight className="w-4 h-4" />
+            </button>
+            <button 
+              onClick={() => {
+                const link = document.createElement('a');
+                link.href = '/LOFTD_plans.pdf';
+                link.download = 'LOFTD_plans.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }}
+              className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
+            >
+              <Download className="w-4 h-4" />
+              <span>DOWNLOAD SPEC SHEET</span>
               </button>
-            </div>
-            </div>
+          </div>
+        </div>
       </section>
 
 
@@ -707,21 +880,16 @@ export default function Index() {
                 <p className="text-base font-light leading-relaxed text-white">{benefit}</p>
             </div>
             ))}
-              </div>
+            </div>
 
           <div className="mt-12 p-6 border-[1px] border-[#3F6B4F] rounded-lg bg-[#3F6B4F]">
             <p className="text-base font-light leading-relaxed text-white">
               This creates a materially better risk-adjusted return profile.
             </p>
             </div>
-          <GalleryGrid
-            images={whyModularGallery}
-            className="mt-12"
-            columns="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-          />
 
           {/* CTA */}
-          <div className="flex justify-center mt-12">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 mt-12">
             <button 
               onClick={() => {
                 ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -730,6 +898,20 @@ export default function Index() {
             >
               <span>REQUEST PRICING & LAYOUTS</span>
               <ArrowRight className="w-4 h-4" />
+            </button>
+            <button 
+              onClick={() => {
+                const link = document.createElement('a');
+                link.href = '/LOFTD_plans.pdf';
+                link.download = 'LOFTD_plans.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }}
+              className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
+            >
+              <Download className="w-4 h-4" />
+              <span>DOWNLOAD SPEC SHEET</span>
               </button>
           </div>
         </div>
@@ -743,7 +925,7 @@ export default function Index() {
             <div className="border-[1px] border-gray-300 rounded-lg px-4 py-2 inline-flex items-center gap-2">
               <span className="text-sm font-medium tracking-tight text-[#070707]">PROCESS</span>
             </div>
-              </div>
+            </div>
 
           <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-8">
             From Concept to Operation
@@ -761,8 +943,8 @@ export default function Index() {
                 <div className="flex items-start gap-4">
                   <span className="text-2xl font-medium text-white flex-shrink-0">{idx + 1}</span>
                   <p className="text-base font-light leading-relaxed text-white">{step}</p>
-            </div>
           </div>
+        </div>
             ))}
             </div>
 
@@ -771,14 +953,9 @@ export default function Index() {
               Typical timelines range from 8–20 weeks depending on configuration.
             </p>
             </div>
-          <GalleryGrid
-            images={processGallery}
-            className="mt-12"
-            columns="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-          />
 
           {/* CTA */}
-          <div className="flex justify-center mt-12">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 mt-12">
               <button
                 onClick={() => {
                 ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -787,6 +964,20 @@ export default function Index() {
               >
               <span>REQUEST PRICING & LAYOUTS</span>
               <ArrowRight className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => {
+                  const link = document.createElement('a');
+                  link.href = '/LOFTD_plans.pdf';
+                  link.download = 'LOFTD_plans.pdf';
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+                className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
+              >
+                <Download className="w-4 h-4" />
+                <span>DOWNLOAD SPEC SHEET</span>
               </button>
           </div>
         </div>
@@ -829,15 +1020,13 @@ export default function Index() {
             </div>
 
               <button
-                onClick={() => {
-                // CTA action can be added here
-                }}
-              className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white rounded-lg flex items-center justify-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out w-full h-full min-h-[200px]"
+                onClick={() => setFormOpen(true)}
+                className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white rounded-lg flex items-center justify-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out w-full h-full min-h-[200px]"
               >
               <span>REQUEST PRICING & LAYOUTS</span>
               <ArrowRight className="w-4 h-4" />
               </button>
-            </div>
+              </div>
             </div>
       </section>
 
@@ -917,6 +1106,7 @@ export default function Index() {
               <div className="flex flex-col gap-2 text-xs font-light text-[#070707]/60">
                 <a href="#" className="hover:text-black transition-colors">Privacy Policy</a>
                 <a href="#" className="hover:text-black transition-colors">Terms of Service</a>
+                <a href="/admin" className="hover:text-black transition-colors">Admin</a>
                 </div>
                 </div>
               </div>
@@ -930,6 +1120,103 @@ export default function Index() {
           </div>
         </div>
       </footer>
+
+      {/* Request Pricing Form Dialog */}
+      <Dialog open={formOpen} onOpenChange={handleCloseForm}>
+        <DialogContent className="bg-[#faf2dc] border-[#3F6B4F] border-[1px] max-w-md">
+          {formSubmitted ? (
+            <div className="text-center py-8">
+              <div className="mb-4">
+                <div className="w-16 h-16 mx-auto rounded-full bg-[#3F6B4F] flex items-center justify-center mb-4">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+              </div>
+              <DialogTitle className="text-2xl font-medium tracking-tight text-[#070707] mb-2">
+                Thank You!
+              </DialogTitle>
+              <DialogDescription className="text-sm font-light text-[#070707]/80">
+                We've received your request and will get back to you soon with pricing ranges, layout concepts, and ROI modeling support.
+              </DialogDescription>
+            </div>
+          ) : (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-medium tracking-tight text-[#070707]">
+                  Request Pricing & Layouts
+                </DialogTitle>
+                <DialogDescription className="text-sm font-light text-[#070707]/80">
+                  Fill out the form below and we'll get back to you with pricing ranges, layout concepts, and ROI modeling support.
+                </DialogDescription>
+              </DialogHeader>
+              <form onSubmit={handleFormSubmit} className="space-y-4 mt-4">
+            <div className="space-y-2">
+              <Label htmlFor="companyName" className="text-sm font-light text-[#070707]">
+                Company Name *
+              </Label>
+              <Input
+                id="companyName"
+                required
+                value={formData.companyName}
+                onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
+                className="bg-white border-gray-300 text-[#070707] placeholder:text-gray-400 focus-visible:ring-[#3F6B4F]"
+                placeholder="Enter company name"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="name" className="text-sm font-light text-[#070707]">
+                Name *
+              </Label>
+              <Input
+                id="name"
+                required
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className="bg-white border-gray-300 text-[#070707] placeholder:text-gray-400 focus-visible:ring-[#3F6B4F]"
+                placeholder="Enter your name"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-sm font-light text-[#070707]">
+                Email *
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                required
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className="bg-white border-gray-300 text-[#070707] placeholder:text-gray-400 focus-visible:ring-[#3F6B4F]"
+                placeholder="Enter your email"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="phone" className="text-sm font-light text-[#070707]">
+                Phone Number
+              </Label>
+              <Input
+                id="phone"
+                type="tel"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                className="bg-white border-gray-300 text-[#070707] placeholder:text-gray-400 focus-visible:ring-[#3F6B4F]"
+                placeholder="Enter your phone number"
+              />
+            </div>
+            <div className="pt-4">
+              <Button
+                type="submit"
+                className="w-full border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white hover:bg-[#2d4f3a] hover:border-[#2d4f3a] transition-all duration-500 ease-out"
+              >
+                Submit Request
+              </Button>
+            </div>
+              </form>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
