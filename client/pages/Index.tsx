@@ -408,24 +408,24 @@ export default function Index() {
             <div>
               <h3 className="text-xl font-medium mb-6">Permanent builds require:</h3>
               <ul className="space-y-4 text-base font-light leading-relaxed">
-                <li className="flex items-start gap-3">
-                  <span className="text-gray-400 mt-2">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-gray-400">•</span>
                   <span>Long entitlement cycles</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-gray-400 mt-2">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-gray-400">•</span>
                   <span>High construction risk and overruns</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-gray-400 mt-2">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-gray-400">•</span>
                   <span>Permanent land commitments</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-gray-400 mt-2">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-gray-400">•</span>
                   <span>Limited flexibility if demand shifts</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-gray-400 mt-2">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-gray-400">•</span>
                   <span>Weather-driven seasonality constraints</span>
                 </li>
               </ul>
@@ -434,20 +434,20 @@ export default function Index() {
             <div>
               <h3 className="text-xl font-medium mb-6">At the same time, operators face:</h3>
               <ul className="space-y-4 text-base font-light leading-relaxed">
-                <li className="flex items-start gap-3">
-                  <span className="text-gray-400 mt-2">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-gray-400">•</span>
                   <span>Declining shoulder-season utilization</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-gray-400 mt-2">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-gray-400">•</span>
                   <span>Pressure to increase member value and retention</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-gray-400 mt-2">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-gray-400">•</span>
                   <span>Rising operating costs</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-gray-400 mt-2">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-gray-400">•</span>
                   <span>Demand for experiential, tech-enabled amenities</span>
                 </li>
               </ul>
@@ -571,20 +571,20 @@ export default function Index() {
             <div className="border-[1px] border-[#faf2dc] rounded-lg p-8 bg-[#faf2dc]">
               <h3 className="text-2xl font-medium mb-4 tracking-tight text-[#070707]">Private Clubs</h3>
               <ul className="space-y-3 text-sm font-light leading-relaxed text-[#070707]">
-                <li className="flex items-start gap-3">
-                  <span className="text-[#070707] mt-1.5">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-[#070707]">•</span>
                   <span>Member engagement upgrades</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-[#070707] mt-1.5">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-[#070707]">•</span>
                   <span>Winter play continuity</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-[#070707] mt-1.5">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-[#070707]">•</span>
                   <span>New membership tiers</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-[#070707] mt-1.5">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-[#070707]">•</span>
                   <span>Private events and leagues</span>
                 </li>
               </ul>
@@ -593,16 +593,16 @@ export default function Index() {
             <div className="border-[1px] border-[#faf2dc] rounded-lg p-8 bg-[#faf2dc]">
               <h3 className="text-2xl font-medium mb-4 tracking-tight text-[#070707]">Golf Courses</h3>
               <ul className="space-y-3 text-sm font-light leading-relaxed text-[#070707]">
-                <li className="flex items-start gap-3">
-                  <span className="text-[#070707] mt-1.5">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-[#070707]">•</span>
                   <span>Monetize unused acreage</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-[#070707] mt-1.5">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-[#070707]">•</span>
                   <span>Drive off-peak utilization</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-[#070707] mt-1.5">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-[#070707]">•</span>
                   <span>Corporate outings and group bookings</span>
                 </li>
               </ul>
@@ -611,16 +611,16 @@ export default function Index() {
             <div className="border-[1px] border-[#faf2dc] rounded-lg p-8 bg-[#faf2dc]">
               <h3 className="text-2xl font-medium mb-4 tracking-tight text-[#070707]">Resorts & Hospitality</h3>
               <ul className="space-y-3 text-sm font-light leading-relaxed text-[#070707]">
-                <li className="flex items-start gap-3">
-                  <span className="text-[#070707] mt-1.5">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-[#070707]">•</span>
                   <span>All-weather activity offering</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-[#070707] mt-1.5">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-[#070707]">•</span>
                   <span>Family programming</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-[#070707] mt-1.5">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-[#070707]">•</span>
                   <span>Premium experiential upsells</span>
                 </li>
               </ul>
@@ -629,16 +629,16 @@ export default function Index() {
             <div className="border-[1px] border-[#faf2dc] rounded-lg p-8 bg-[#faf2dc]">
               <h3 className="text-2xl font-medium mb-4 tracking-tight text-[#070707]">Developers / Mixed-Use</h3>
               <ul className="space-y-3 text-sm font-light leading-relaxed text-[#070707]">
-                <li className="flex items-start gap-3">
-                  <span className="text-[#070707] mt-1.5">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-[#070707]">•</span>
                   <span>Amenity differentiation</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-[#070707] mt-1.5">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-[#070707]">•</span>
                   <span>Faster lease-up velocity</span>
                 </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-[#070707] mt-1.5">•</span>
+                <li className="flex items-center gap-3">
+                  <span className="text-[#070707]">•</span>
                   <span>Strong visual activation of outdoor space</span>
                 </li>
               </ul>
@@ -697,20 +697,20 @@ export default function Index() {
               <div>
                 <h3 className="text-xl font-medium mb-4">Typical deployment profile:</h3>
                 <ul className="space-y-3 text-base font-light leading-relaxed">
-                  <li className="flex items-start gap-3">
-                    <span className="text-gray-400 mt-2">•</span>
+                  <li className="flex items-center gap-3">
+                    <span className="text-gray-400">•</span>
                     <span><strong>Estimated Build Cost:</strong> ~$100,000 per bay</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-gray-400 mt-2">•</span>
+                  <li className="flex items-center gap-3">
+                    <span className="text-gray-400">•</span>
                     <span><strong>Target MSRP:</strong> $150,000–$170,000 per bay</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-gray-400 mt-2">•</span>
+                  <li className="flex items-center gap-3">
+                    <span className="text-gray-400">•</span>
                     <span>Multi-bay discounts available</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-gray-400 mt-2">•</span>
+                  <li className="flex items-center gap-3">
+                    <span className="text-gray-400">•</span>
                     <span>Financing options available through equipment lenders</span>
                   </li>
                 </ul>
