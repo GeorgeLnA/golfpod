@@ -152,8 +152,8 @@ export default function Admin() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#faf2dc] flex items-center justify-center p-4">
-        <div className="w-full max-w-sm">
+      <div className="min-h-screen bg-[#faf2dc] flex items-center justify-center px-4 sm:px-5 py-8">
+        <div className="w-full max-w-sm mx-auto">
           <div className="bg-white border border-[#3F6B4F] rounded-lg p-6">
             <h1 className="text-2xl font-medium text-[#070707] mb-1">Admin Panel</h1>
             <p className="text-sm font-light text-[#070707]/80 mb-6">Enter password</p>
@@ -194,8 +194,8 @@ export default function Admin() {
   }
 
   return (
-    <div className="min-h-screen bg-[#faf2dc] p-4">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-[#faf2dc] px-4 sm:px-5 py-4">
+      <div className="w-full">
         {/* Header */}
         <div className="mb-4">
           <div className="flex justify-between items-center mb-3">
@@ -220,17 +220,17 @@ export default function Admin() {
           </div>
         </div>
 
-        {/* Content */}
+        {/* Mobile Card View - Only visible on mobile */}
         {loading ? (
-          <div className="text-center py-12">
+          <div className="text-center py-12 md:hidden">
             <p className="text-sm font-light text-[#070707]/80">Loading...</p>
           </div>
         ) : leads.length === 0 ? (
-          <div className="text-center py-12 bg-white border border-gray-300 rounded-lg">
+          <div className="text-center py-12 bg-white border border-gray-300 rounded-lg md:hidden">
             <p className="text-sm font-light text-[#070707]/80">No submissions yet</p>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-3 md:hidden">
             {leads.map((lead) => (
               <div key={lead.id} className="bg-white border border-gray-300 rounded-lg p-4">
                 <div className="flex justify-between items-start gap-3">
@@ -269,9 +269,18 @@ export default function Admin() {
           </div>
         )}
 
-        {/* Desktop Table View */}
-        <div className="hidden md:block mt-6">
-          <div className="bg-white border border-gray-300 rounded-lg overflow-hidden">
+        {/* Desktop Table View - Only visible on desktop */}
+        {loading ? (
+          <div className="hidden md:block text-center py-12">
+            <p className="text-sm font-light text-[#070707]/80">Loading...</p>
+          </div>
+        ) : leads.length === 0 ? (
+          <div className="hidden md:block text-center py-12 bg-white border border-gray-300 rounded-lg">
+            <p className="text-sm font-light text-[#070707]/80">No submissions yet</p>
+          </div>
+        ) : (
+          <div className="hidden md:block mt-6">
+            <div className="bg-white border border-gray-300 rounded-lg overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-[#3F6B4F] text-white">
@@ -320,7 +329,8 @@ export default function Admin() {
               </table>
             </div>
           </div>
-        </div>
+          </div>
+        )}
 
         {/* Edit Dialog */}
         <Dialog open={!!editingLead} onOpenChange={() => setEditingLead(null)}>

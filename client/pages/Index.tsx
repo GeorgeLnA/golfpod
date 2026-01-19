@@ -142,8 +142,8 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-[#faf2dc] text-[#070707]">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 pt-2">
-        <div className="w-full max-w-[1400px] mx-auto relative flex justify-between items-center">
+      <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-5 pt-2">
+        <div className="w-full relative flex justify-between items-center">
           {/* Logo */}
           <button
             onClick={() => {
@@ -296,8 +296,8 @@ export default function Index() {
       </header>
 
       {/* Hero Section */}
-      <section ref={heroSectionRef} className="relative pt-24 px-4 md:px-8">
-        <div className="w-full max-w-[1400px] mx-auto">
+      <section ref={heroSectionRef} className="relative pt-24 px-4 sm:px-5">
+        <div className="w-full">
           {/* Hero Video with padding and rounded corners */}
           <div className="relative rounded-lg overflow-hidden h-[500px] md:h-[600px] mb-8">
             <video
@@ -334,7 +334,7 @@ export default function Index() {
                     link.click();
                     document.body.removeChild(link);
                   }}
-                  className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
+                  className="hidden border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
                 >
                   <Download className="w-4 h-4" />
                   <span>DOWNLOAD SPEC SHEET</span>
@@ -346,8 +346,8 @@ export default function Index() {
       </section>
 
       {/* Text Content Section */}
-      <section className="bg-[#faf2dc] py-16 px-4 md:px-8">
-        <div className="w-full max-w-[1400px] mx-auto">
+      <section className="bg-[#faf2dc] py-16 px-4 sm:px-5">
+        <div className="w-full">
           <h1 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-8">
             Turn Underutilized Land Into Year-Round Revenue.
           </h1>
@@ -381,7 +381,7 @@ export default function Index() {
                   link.click();
                   document.body.removeChild(link);
                 }}
-                className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
+                className="hidden border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
               >
                 <Download className="w-4 h-4" />
                 <span>DOWNLOAD SPEC SHEET</span>
@@ -393,7 +393,7 @@ export default function Index() {
 
       {/* Problem Section */}
       <section ref={problemSectionRef} className="bg-[#faf2dc] py-16 px-4 md:px-8">
-        <div className="w-full max-w-[1400px] mx-auto">
+        <div className="w-full">
           <div className="mb-8">
             <div className="border-[1px] border-gray-300 rounded-lg px-4 py-2 inline-flex items-center gap-2">
               <span className="text-sm font-medium tracking-tight text-[#070707]">THE PROBLEM</span>
@@ -463,9 +463,7 @@ export default function Index() {
           {/* CTA */}
           <div className="flex flex-col sm:flex-row justify-center gap-3 mt-12">
             <button 
-              onClick={() => {
-                ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
+              onClick={() => setFormOpen(true)}
               className="border-[1px] border-[#3F6B4F] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(63,107,79,0.3)] hover:border-[#2d4f3a] hover:scale-[1.02] transition-all duration-500 ease-out"
             >
               <span>REQUEST PRICING & LAYOUTS</span>
@@ -480,7 +478,7 @@ export default function Index() {
                 link.click();
                 document.body.removeChild(link);
               }}
-              className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
+              className="hidden border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
             >
               <Download className="w-4 h-4" />
               <span>DOWNLOAD SPEC SHEET</span>
@@ -491,8 +489,8 @@ export default function Index() {
 
 
       {/* Solution Section */}
-      <section ref={solutionSectionRef} className="bg-[#3F6B4F] py-16 px-4 md:px-8">
-        <div className="w-full max-w-[1400px] mx-auto">
+      <section ref={solutionSectionRef} className="bg-[#3F6B4F] py-16 px-4 sm:px-5">
+        <div className="w-full">
           <div className="mb-8">
             <div className="border-[1px] border-[#faf2dc] rounded-lg px-4 py-2 inline-flex items-center gap-2 bg-[#faf2dc]">
               <span className="text-sm font-medium tracking-tight text-[#070707]">THE SOLUTION</span>
@@ -546,7 +544,7 @@ export default function Index() {
                 link.click();
                 document.body.removeChild(link);
               }}
-              className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
+              className="hidden border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
             >
               <Download className="w-4 h-4" />
               <span>DOWNLOAD SPEC SHEET</span>
@@ -557,8 +555,8 @@ export default function Index() {
 
 
       {/* Use Cases Section */}
-      <section ref={useCasesSectionRef} className="bg-[#3F6B4F] py-16 px-4 md:px-8">
-        <div className="w-full max-w-[1400px] mx-auto">
+      <section ref={useCasesSectionRef} className="bg-[#3F6B4F] py-16 px-4 sm:px-5">
+        <div className="w-full">
           <div className="mb-8">
             <div className="border-[1px] border-[#faf2dc] rounded-lg px-4 py-2 inline-flex items-center gap-2 bg-[#faf2dc]">
               <span className="text-sm font-medium tracking-tight text-[#070707]">USE CASES</span>
@@ -644,8 +642,8 @@ export default function Index() {
                   <span>Strong visual activation of outdoor space</span>
                 </li>
               </ul>
-                </div>
-              </div>
+          </div>
+        </div>
 
           <GalleryGrid
             images={useCasesGallery}
@@ -671,7 +669,7 @@ export default function Index() {
                 link.click();
                 document.body.removeChild(link);
               }}
-              className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
+              className="hidden border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
             >
               <Download className="w-4 h-4" />
               <span>DOWNLOAD SPEC SHEET</span>
@@ -683,12 +681,12 @@ export default function Index() {
 
       {/* Economics Snapshot Section */}
       <section ref={economicsSectionRef} className="bg-[#faf2dc] py-16 px-4 md:px-8">
-        <div className="w-full max-w-[1400px] mx-auto">
+              <div className="w-full">
           <div className="mb-8">
             <div className="border-[1px] border-gray-300 rounded-lg px-4 py-2 inline-flex items-center gap-2">
               <span className="text-sm font-medium tracking-tight text-[#070707]">ECONOMICS</span>
-                  </div>
                 </div>
+              </div>
 
           <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-8">
             Strong Unit Economics Without Permanent Risk
@@ -716,8 +714,8 @@ export default function Index() {
                     <span>Financing options available through equipment lenders</span>
                   </li>
                 </ul>
-            </div>
-              </div>
+                  </div>
+                </div>
 
             <div className="space-y-6">
               <div>
@@ -740,9 +738,7 @@ export default function Index() {
           {/* CTA */}
           <div className="flex flex-col sm:flex-row justify-center gap-3 mt-12">
             <button 
-              onClick={() => {
-                ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
+              onClick={() => setFormOpen(true)}
               className="border-[1px] border-[#3F6B4F] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(63,107,79,0.3)] hover:border-[#2d4f3a] hover:scale-[1.02] transition-all duration-500 ease-out"
             >
               <span>REQUEST PRICING & LAYOUTS</span>
@@ -757,7 +753,7 @@ export default function Index() {
                 link.click();
                 document.body.removeChild(link);
               }}
-              className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
+              className="hidden border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
             >
               <Download className="w-4 h-4" />
               <span>DOWNLOAD SPEC SHEET</span>
@@ -769,7 +765,7 @@ export default function Index() {
 
       {/* Configurations Section */}
       <section ref={configurationsSectionRef} className="bg-[#faf2dc] py-16 px-4 md:px-8">
-        <div className="w-full max-w-[1400px] mx-auto">
+        <div className="w-full">
           <div className="mb-8">
             <div className="border-[1px] border-gray-300 rounded-lg px-4 py-2 inline-flex items-center gap-2">
               <span className="text-sm font-medium tracking-tight text-[#070707]">CONFIGURATIONS</span>
@@ -824,9 +820,7 @@ export default function Index() {
           {/* CTA */}
           <div className="flex flex-col sm:flex-row justify-center gap-3 mt-12">
             <button 
-              onClick={() => {
-                ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
+              onClick={() => setFormOpen(true)}
               className="border-[1px] border-[#3F6B4F] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(63,107,79,0.3)] hover:border-[#2d4f3a] hover:scale-[1.02] transition-all duration-500 ease-out"
             >
               <span>REQUEST PRICING & LAYOUTS</span>
@@ -841,7 +835,7 @@ export default function Index() {
                 link.click();
                 document.body.removeChild(link);
               }}
-              className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
+              className="hidden border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
             >
               <Download className="w-4 h-4" />
               <span>DOWNLOAD SPEC SHEET</span>
@@ -853,7 +847,7 @@ export default function Index() {
 
       {/* Why Modular Section */}
       <section ref={whyModularSectionRef} className="bg-[#faf2dc] py-16 px-4 md:px-8">
-        <div className="w-full max-w-[1400px] mx-auto">
+        <div className="w-full">
           <div className="mb-8">
             <div className="border-[1px] border-gray-300 rounded-lg px-4 py-2 inline-flex items-center gap-2">
               <span className="text-sm font-medium tracking-tight text-[#070707]">WHY MODULAR</span>
@@ -891,9 +885,7 @@ export default function Index() {
           {/* CTA */}
           <div className="flex flex-col sm:flex-row justify-center gap-3 mt-12">
             <button 
-              onClick={() => {
-                ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
+              onClick={() => setFormOpen(true)}
               className="border-[1px] border-[#3F6B4F] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(63,107,79,0.3)] hover:border-[#2d4f3a] hover:scale-[1.02] transition-all duration-500 ease-out"
             >
               <span>REQUEST PRICING & LAYOUTS</span>
@@ -908,7 +900,7 @@ export default function Index() {
                 link.click();
                 document.body.removeChild(link);
               }}
-              className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
+              className="hidden border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
             >
               <Download className="w-4 h-4" />
               <span>DOWNLOAD SPEC SHEET</span>
@@ -920,7 +912,7 @@ export default function Index() {
 
       {/* Process Section */}
       <section ref={processSectionRef} className="bg-[#faf2dc] py-16 px-4 md:px-8">
-        <div className="w-full max-w-[1400px] mx-auto">
+        <div className="w-full">
           <div className="mb-8">
             <div className="border-[1px] border-gray-300 rounded-lg px-4 py-2 inline-flex items-center gap-2">
               <span className="text-sm font-medium tracking-tight text-[#070707]">PROCESS</span>
@@ -957,9 +949,7 @@ export default function Index() {
           {/* CTA */}
           <div className="flex flex-col sm:flex-row justify-center gap-3 mt-12">
               <button
-                onClick={() => {
-                ctaSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }}
+                onClick={() => setFormOpen(true)}
               className="border-[1px] border-[#3F6B4F] bg-[#faf2dc] text-[#070707] px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#faf2dc] hover:shadow-[0_0_20px_rgba(63,107,79,0.3)] hover:border-[#2d4f3a] hover:scale-[1.02] transition-all duration-500 ease-out"
               >
               <span>REQUEST PRICING & LAYOUTS</span>
@@ -974,7 +964,7 @@ export default function Index() {
                   link.click();
                   document.body.removeChild(link);
                 }}
-                className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
+                className="hidden border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white px-6 py-3 rounded-lg flex items-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:border-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] transition-all duration-500 ease-out"
               >
                 <Download className="w-4 h-4" />
                 <span>DOWNLOAD SPEC SHEET</span>
@@ -985,8 +975,8 @@ export default function Index() {
 
 
       {/* CTA Section */}
-      <section ref={ctaSectionRef} className="bg-[#faf2dc] py-20 px-4 md:px-8">
-        <div className="w-full max-w-[1400px] mx-auto">
+      <section ref={ctaSectionRef} className="bg-[#faf2dc] py-20 px-4 sm:px-5">
+        <div className="w-full">
           <div className="text-center mb-12">
             <h2 className="text-5xl md:text-7xl font-medium leading-tight tracking-tight mb-6">
               Explore a Modular Golf Deployment
@@ -994,46 +984,24 @@ export default function Index() {
             <p className="text-lg font-light leading-relaxed mb-8 max-w-2xl mx-auto">
               Request pricing ranges, layout concepts, site feasibility feedback, and ROI modeling support.
             </p>
-            </div>
+          </div>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <div className="border-[1px] border-[#3F6B4F] rounded-lg p-8 bg-[#3F6B4F]">
-              <h3 className="text-xl font-medium mb-4 text-white">Request:</h3>
-              <ul className="space-y-3 text-base font-light leading-relaxed text-white">
-                <li className="flex items-start gap-3">
-                  <span className="text-white mt-2">•</span>
-                  <span>Pricing ranges</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-white mt-2">•</span>
-                  <span>Layout concepts</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-white mt-2">•</span>
-                  <span>Site feasibility feedback</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-white mt-2">•</span>
-                  <span>ROI modeling support</span>
-                </li>
-              </ul>
-            </div>
-
-              <button
-                onClick={() => setFormOpen(true)}
-                className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white rounded-lg flex items-center justify-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out w-full h-full min-h-[200px]"
-              >
+          <div className="flex justify-center mb-12">
+            <button
+              onClick={() => setFormOpen(true)}
+              className="border-[1px] border-[#3F6B4F] bg-[#3F6B4F] text-white rounded-lg flex items-center justify-center gap-3 text-sm font-light tracking-tight hover:bg-[#2d4f3a] hover:shadow-[0_0_20px_rgba(63,107,79,0.4)] hover:scale-[1.02] transition-all duration-500 ease-out px-8 py-6"
+            >
               <span>REQUEST PRICING & LAYOUTS</span>
               <ArrowRight className="w-4 h-4" />
-              </button>
-              </div>
-            </div>
+            </button>
+          </div>
+        </div>
       </section>
 
 
       {/* Footer */}
-      <footer className="bg-[#faf2dc] py-16 px-4 md:px-8 rounded-t-3xl">
-        <div className="w-full max-w-[1400px] mx-auto">
+      <footer className="bg-[#faf2dc] py-16 px-4 sm:px-5 rounded-t-3xl">
+        <div className="w-full">
           <div className="grid md:grid-cols-3 gap-12 mb-12">
             {/* Brand */}
             <div>
