@@ -13,3 +13,11 @@
   from = "/api/*"
   status = 200
   to = "/.netlify/functions/api/:splat"
+
+# SPA fallback - redirect all routes to index.html except API routes
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
+  conditions = {Role = ["admin"]}
